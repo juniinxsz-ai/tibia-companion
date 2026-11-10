@@ -1,0 +1,1165 @@
+<title>Tibia Companion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap">
+<style>
+/* Medieval grimoire — parchment, iron, torchlight */
+:root {
+  --bg: #1c1510;
+  --bg-parchment: #2a2118;
+  --bg-card: #342a1f;
+  --bg-input: #251e15;
+  --fg: #d4c5a9;
+  --fg-muted: #9a8b6f;
+  --accent: #c9382a;
+  --accent-gold: #d4a642;
+  --accent-green: #5a9e5a;
+  --border: #5a4a35;
+  --border-ornate: #7a6540;
+  --glow: rgba(212,166,66,0.15);
+  --font-display: 'Cinzel Decorative', 'Cinzel', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'IM Fell English', 'Georgia', serif;
+  --font-ui: 'MedievalSharp', cursive;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #e8dcc8;
+    --bg-parchment: #f2e8d0;
+    --bg-card: #f8f0dc;
+    --bg-input: #e0d4b8;
+    --fg: #2a2015;
+    --fg-muted: #6a5d48;
+    --accent: #a0281e;
+    --accent-gold: #9a7a20;
+    --accent-green: #3a7a3a;
+    --border: #c0aa80;
+    --border-ornate: #a08850;
+    --glow: rgba(160,136,80,0.2);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #e8dcc8;
+  --bg-parchment: #f2e8d0;
+  --bg-card: #f8f0dc;
+  --bg-input: #e0d4b8;
+  --fg: #2a2015;
+  --fg-muted: #6a5d48;
+  --accent: #a0281e;
+  --accent-gold: #9a7a20;
+  --accent-green: #3a7a3a;
+  --border: #c0aa80;
+  --border-ornate: #a08850;
+  --glow: rgba(160,136,80,0.2);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  min-height: 100vh;
+  line-height: 1.6;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(212,166,66,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(201,56,42,0.04) 0%, transparent 60%);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--bg);
+}
+
+/* Header */
+.header-crest {
+  text-align: center;
+  padding: 20px 0 6px;
+  position: relative;
+}
+.header-crest::before {
+  content: "- - - -";
+  display: block;
+  letter-spacing: 1.2em;
+  color: var(--border-ornate);
+  font-size: 0.6rem;
+  margin-bottom: 4px;
+}
+.header-crest h1 {
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 20px var(--glow), 0 2px 4px rgba(0,0,0,0.5);
+  margin: 0;
+}
+.header-crest .subtitle {
+  font-family: var(--font-ui);
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  margin-top: 2px;
+  letter-spacing: 0.08em;
+}
+.ornament-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  color: var(--border-ornate);
+}
+.ornament-line::before,
+.ornament-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-ornate), transparent);
+}
+.ornament-line span {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+h2, h3 { font-family: var(--font-heading); color: var(--accent-gold); }
+h3 { font-size: 1rem; letter-spacing: 0.03em; }
+
+/* Tabs — medieval scroll tabs */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 6px 0 10px;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  background: var(--bg);
+  z-index: 5;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  background: var(--bg-parchment);
+  color: var(--fg-muted);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  position: relative;
+}
+.tab-btn.active {
+  background: var(--bg-card);
+  color: var(--accent-gold);
+  border-color: var(--border-ornate);
+  border-bottom-color: var(--bg-card);
+  text-shadow: 0 0 10px var(--glow);
+}
+.tab-btn:hover:not(.active) {
+  color: var(--fg);
+  background: var(--bg-card);
+}
+
+.tab-content { display: none; padding-bottom: 40px; }
+.tab-content.active { display: block; }
+
+/* Cards — parchment scrolls */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-ornate);
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.2);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, var(--bg) 48%, transparent 50%);
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.card h3 { font-size: 1rem; margin-bottom: 8px; }
+
+/* Form elements — medieval inputs */
+label {
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-bottom: 2px solid var(--border-ornate);
+  border-radius: 2px;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 8px var(--glow);
+}
+select option { background: var(--bg-card); color: var(--fg); }
+
+button.primary {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(180deg, #8a3020, #6a2018);
+  color: var(--accent-gold);
+  border: 1px solid var(--border-ornate);
+  border-radius: 2px;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  letter-spacing: 0.06em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 4px rgba(0,0,0,0.3);
+}
+button.primary:hover {
+  background: linear-gradient(180deg, #9a3828, #7a2820);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 0 12px var(--glow);
+}
+
+.result-box {
+  background: var(--bg-parchment);
+  border: 1px solid var(--accent-gold);
+  border-left: 3px solid var(--accent-gold);
+  padding: 14px;
+  margin-top: 12px;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+}
+.result-box .big {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-shadow: 0 0 10px var(--glow);
+}
+
+/* Tables — ancient ledger */
+.table-wrap { overflow-x: auto; margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th {
+  background: var(--bg-input);
+  color: var(--accent-gold);
+  font-family: var(--font-ui);
+  font-weight: normal;
+  text-align: left;
+  padding: 10px 8px;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--border-ornate);
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+tr:hover td { background: var(--glow); }
+
+/* Tags — vocação emblems */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 2px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  border: 1px solid;
+}
+.tag-ek { background: rgba(201,56,42,0.15); color: var(--accent); border-color: rgba(201,56,42,0.3); }
+.tag-rp { background: rgba(90,158,90,0.15); color: var(--accent-green); border-color: rgba(90,158,90,0.3); }
+.tag-ms { background: rgba(90,120,200,0.15); color: #7090d0; border-color: rgba(90,120,200,0.3); }
+.tag-ed { background: rgba(212,166,66,0.15); color: var(--accent-gold); border-color: rgba(212,166,66,0.3); }
+.tag-all { background: rgba(154,139,111,0.15); color: var(--fg-muted); border-color: rgba(154,139,111,0.3); }
+
+/* Search — scroll search */
+.search-box {
+  position: relative;
+  margin-bottom: 12px;
+}
+.search-box input {
+  padding-left: 36px;
+  margin-bottom: 0;
+  font-family: var(--font-body);
+  font-style: italic;
+}
+.search-box::before {
+  content: '\2726';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+
+/* Accordion — tome entries */
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-ornate);
+  margin-bottom: 4px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.accordion-header:hover {
+  border-left-color: var(--accent-gold);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15), inset 0 0 15px var(--glow);
+}
+.accordion-header h3 { margin: 0; font-size: 0.9rem; }
+.accordion-header .arrow {
+  transition: transform 0.2s;
+  color: var(--border-ornate);
+  font-size: 0.7rem;
+}
+.accordion-header.open .arrow { transform: rotate(90deg); color: var(--accent-gold); }
+.accordion-body {
+  display: none;
+  padding: 14px 16px;
+  background: var(--bg-parchment);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-left: 3px solid var(--border-ornate);
+  margin-top: -6px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+}
+.accordion-body.open { display: block; }
+.accordion-body b { color: var(--accent-gold); font-family: var(--font-ui); }
+
+.section-title {
+  font-family: var(--font-heading);
+  color: var(--accent-gold);
+  font-size: 1.05rem;
+  margin: 24px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-ornate);
+  position: relative;
+  letter-spacing: 0.04em;
+}
+.section-title::after {
+  content: '\2666';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 8px;
+  color: var(--border-ornate);
+  font-size: 0.6rem;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.voc-filter {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.voc-filter button {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg-card);
+  color: var(--fg-muted);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.voc-filter button.active {
+  background: linear-gradient(180deg, #8a3020, #6a2018);
+  color: var(--accent-gold);
+  border-color: var(--border-ornate);
+  text-shadow: 0 0 8px var(--glow);
+}
+.voc-filter button:hover:not(.active) {
+  border-color: var(--accent-gold);
+  color: var(--fg);
+}
+
+.badge-count {
+  background: var(--accent);
+  color: #f0d8a0;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+}
+
+/* Scroll bars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-ornate); border-radius: 3px; }
+</style>
+
+<div class="header-crest">
+  <h1>Tibia Companion</h1>
+  <div class="subtitle">Grimoire do Aventureiro</div>
+</div>
+<div class="ornament-line"><span>✦</span></div>
+
+<nav class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="exp">EXP Party</button>
+  <button class="tab-btn" data-tab="tc">Tibia Coins</button>
+  <button class="tab-btn" data-tab="quests">Quests</button>
+  <button class="tab-btn" data-tab="market">Market</button>
+  <button class="tab-btn" data-tab="equip">Equipamentos</button>
+  <button class="tab-btn" data-tab="addons">Addons</button>
+  <button class="tab-btn" data-tab="mounts">Montarias</button>
+</nav>
+
+<!-- ==================== EXP PARTY ==================== -->
+<div class="tab-content active" id="tab-exp">
+  <div class="card">
+    <h3>Calculadora de EXP em Party</h3>
+    <p style="font-size:0.82rem;color:var(--fg-muted);margin-bottom:12px;font-style:italic">Adicione os membros da party para calcular o bonus de experiencia compartilhada.</p>
+
+    <div id="partyMembers">
+      <div class="party-member grid-2" style="margin-bottom:8px">
+        <div><label>Level</label><input type="number" class="member-level" value="200" min="1" max="4000"></div>
+        <div><label>Vocacao</label>
+          <select class="member-voc">
+            <option value="EK">Elite Knight</option>
+            <option value="RP">Royal Paladin</option>
+            <option value="MS">Master Sorcerer</option>
+            <option value="ED">Elder Druid</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:10px">
+      <button class="primary" onclick="addMember()" style="background:linear-gradient(180deg,#3a6a3a,#2a4a2a)">+ Membro</button>
+      <button class="primary" onclick="removeMember()" style="background:linear-gradient(180deg,#5a4a35,#3a3025)">- Remover</button>
+    </div>
+
+    <label>EXP base do monstro</label>
+    <input type="number" id="monsterExp" value="10000" min="1">
+
+    <label>Bonus de Stamina</label>
+    <select id="staminaBonus">
+      <option value="1.5">Happy Hour (150%)</option>
+      <option value="1" selected>Normal (100%)</option>
+      <option value="0.5">Low Stamina (50%)</option>
+      <option value="0">Sem Stamina (0%)</option>
+    </select>
+
+    <label>Bonus Extra (%)</label>
+    <input type="number" id="extraBonus" value="0" min="0" max="1000" placeholder="Prey, boost, etc.">
+
+    <button class="primary" onclick="calcPartyExp()">Calcular EXP</button>
+    <div id="expResult"></div>
+  </div>
+
+  <div class="card">
+    <h3>Como funciona a Party</h3>
+    <ul style="font-size:0.82rem;line-height:1.8;padding-left:16px;color:var(--fg-muted)">
+      <li><b style="color:var(--accent-gold)">Shared EXP</b> e ativado com 2+ membros online e proximos</li>
+      <li>A diferenca de level entre o maior e menor deve ser no maximo <b style="color:var(--accent-gold)">2/3 do level medio</b></li>
+      <li><b style="color:var(--accent-gold)">Bonus por vocacao:</b> party com todas as 4 vocacoes diferentes ganha ate <b style="color:var(--accent-gold)">+80% de EXP</b></li>
+      <li>2 vocacoes diferentes: +30%, 3 vocacoes: +60%, 4 vocacoes: +80%</li>
+      <li>Cada membro recebe EXP proporcional ao seu level</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ==================== TIBIA COINS ==================== -->
+<div class="tab-content" id="tab-tc">
+  <div class="card">
+    <h3>Calculadora de Tibia Coins</h3>
+    <p style="font-size:0.82rem;color:var(--fg-muted);margin-bottom:12px;font-style:italic">Converta entre Tibia Coins e Gold. Atualize o preco conforme seu servidor.</p>
+
+    <label>Preco de 1 TC no Market (gold)</label>
+    <input type="number" id="tcPrice" value="40000" min="1">
+
+    <div class="grid-2">
+      <div>
+        <label>Tibia Coins</label>
+        <input type="number" id="tcAmount" value="250" min="0" oninput="convertTC('toGold')">
+      </div>
+      <div>
+        <label>Gold (gp)</label>
+        <input type="number" id="goldAmount" value="10000000" min="0" oninput="convertTC('toTC')">
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div id="tcResult">
+        <div><b>250 TC</b> = <span class="big">10,000,000 gp</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tabela de Referencia (precos reais em BRL)</h3>
+    <p style="font-size:0.78rem;color:var(--fg-muted);margin-bottom:8px;font-style:italic">Precos oficiais da Tibia Store (podem variar)</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Pacote</th><th>TC</th><th>Preco (BRL)*</th><th>Por TC</th></tr>
+        <tr><td>Menor</td><td>250</td><td>~R$ 32</td><td>~R$ 0.13</td></tr>
+        <tr><td>Medio</td><td>750</td><td>~R$ 88</td><td>~R$ 0.12</td></tr>
+        <tr><td>Grande</td><td>1500</td><td>~R$ 160</td><td>~R$ 0.11</td></tr>
+        <tr><td>Mega</td><td>3000</td><td>~R$ 300</td><td>~R$ 0.10</td></tr>
+      </table>
+    </div>
+    <p style="font-size:0.72rem;color:var(--fg-muted);margin-top:8px;font-style:italic">*Valores aproximados, confira sempre na Tibia Store oficial.</p>
+  </div>
+
+  <div class="card">
+    <h3>Itens Populares da Store</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Item</th><th>TC</th><th>Tipo</th></tr>
+        <tr><td>Premium Scroll (30d)</td><td>250</td><td>Premium</td></tr>
+        <tr><td>XP Boost (1h)</td><td>30</td><td>Boost</td></tr>
+        <tr><td>Prey Wildcard</td><td>50</td><td>Prey</td></tr>
+        <tr><td>Temple Teleport</td><td>15</td><td>Utilidade</td></tr>
+        <tr><td>Name Change</td><td>250</td><td>Servico</td></tr>
+        <tr><td>Character Bazaar (listar)</td><td>50</td><td>Servico</td></tr>
+        <tr><td>Outfit/Mount (media)</td><td>600-900</td><td>Cosmetico</td></tr>
+        <tr><td>Hirelings</td><td>150</td><td>NPC</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUESTS ==================== -->
+<div class="tab-content" id="tab-quests">
+  <div class="search-box">
+    <input type="text" id="questSearch" placeholder="Buscar quest nos pergaminhos..." oninput="filterQuests()">
+  </div>
+  <div id="questList"></div>
+</div>
+
+<!-- ==================== MARKET ==================== -->
+<div class="tab-content" id="tab-market">
+  <div class="card">
+    <h3>Valores de Itens no Market</h3>
+    <p style="font-size:0.82rem;color:var(--fg-muted);margin-bottom:8px;font-style:italic">Referencia de precos comuns. Valores variam por servidor.</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="marketSearch" placeholder="Buscar item..." oninput="filterMarket()">
+  </div>
+  <div class="voc-filter" id="marketCatFilter"></div>
+  <div id="marketList"></div>
+</div>
+
+<!-- ==================== EQUIPAMENTOS ==================== -->
+<div class="tab-content" id="tab-equip">
+  <div class="card">
+    <h3>Equipamentos por Level e Vocacao</h3>
+    <p style="font-size:0.82rem;color:var(--fg-muted);margin-bottom:8px;font-style:italic">Guia de itens recomendados para cada fase do jogo.</p>
+  </div>
+  <div class="voc-filter" id="equipVocFilter">
+    <button class="active" data-voc="EK" onclick="filterEquip('EK')">Knight</button>
+    <button data-voc="RP" onclick="filterEquip('RP')">Paladin</button>
+    <button data-voc="MS" onclick="filterEquip('MS')">Sorcerer</button>
+    <button data-voc="ED" onclick="filterEquip('ED')">Druid</button>
+  </div>
+  <div id="equipList"></div>
+</div>
+
+<!-- ==================== ADDONS ==================== -->
+<div class="tab-content" id="tab-addons">
+  <div class="search-box">
+    <input type="text" id="addonSearch" placeholder="Buscar addon nos registros..." oninput="filterAddons()">
+  </div>
+  <div id="addonList"></div>
+</div>
+
+<!-- ==================== MONTARIAS ==================== -->
+<div class="tab-content" id="tab-mounts">
+  <div class="search-box">
+    <input type="text" id="mountSearch" placeholder="Buscar montaria..." oninput="filterMounts()">
+  </div>
+  <div id="mountList"></div>
+</div>
+
+<div class="ornament-line" style="margin-top:20px"><span>✦</span></div>
+<p style="text-align:center;font-size:0.72rem;color:var(--fg-muted);padding:8px 0 20px;font-style:italic">Que Banor guie tua jornada, aventureiro.</p>
+
+<script>
+// ========== TAB SYSTEM ==========
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ========== EXP PARTY CALCULATOR ==========
+function addMember() {
+  const c = document.getElementById('partyMembers');
+  const d = document.createElement('div');
+  d.className = 'party-member grid-2';
+  d.style.marginBottom = '8px';
+  d.innerHTML = `<div><label>Level</label><input type="number" class="member-level" value="200" min="1" max="4000"></div>
+    <div><label>Vocacao</label><select class="member-voc">
+      <option value="EK">Elite Knight</option><option value="RP">Royal Paladin</option>
+      <option value="MS">Master Sorcerer</option><option value="ED">Elder Druid</option>
+    </select></div>`;
+  c.appendChild(d);
+}
+function removeMember() {
+  const c = document.getElementById('partyMembers');
+  if (c.children.length > 1) c.removeChild(c.lastElementChild);
+}
+
+function calcPartyExp() {
+  const members = [];
+  document.querySelectorAll('.party-member').forEach(m => {
+    members.push({
+      level: parseInt(m.querySelector('.member-level').value) || 1,
+      voc: m.querySelector('.member-voc').value
+    });
+  });
+  if (members.length < 2) {
+    document.getElementById('expResult').innerHTML = '<div class="result-box" style="border-color:var(--accent)">A party necessita de ao menos 2 membros!</div>';
+    return;
+  }
+
+  const baseExp = parseInt(document.getElementById('monsterExp').value) || 0;
+  const stamina = parseFloat(document.getElementById('staminaBonus').value);
+  const extraPct = parseInt(document.getElementById('extraBonus').value) || 0;
+
+  const levels = members.map(m => m.level);
+  const maxLvl = Math.max(...levels);
+  const minLvl = Math.min(...levels);
+  const avgLvl = levels.reduce((a, b) => a + b, 0) / levels.length;
+  const diff = maxLvl - minLvl;
+  const maxDiff = Math.floor(avgLvl * 2 / 3);
+  const sharedActive = diff <= maxDiff;
+
+  const uniqueVocs = new Set(members.map(m => m.voc)).size;
+  let vocBonus = 0;
+  if (uniqueVocs === 2) vocBonus = 0.30;
+  else if (uniqueVocs === 3) vocBonus = 0.60;
+  else if (uniqueVocs >= 4) vocBonus = 0.80;
+
+  const totalLvl = levels.reduce((a, b) => a + b, 0);
+  const sharedExp = baseExp * (1 + vocBonus);
+
+  let html = '<div class="result-box">';
+  html += `<div style="margin-bottom:8px"><b>Party:</b> ${members.length} membros | <b>Vocacoes unicas:</b> ${uniqueVocs}/4</div>`;
+  html += `<div style="margin-bottom:8px"><b>Bonus vocacao:</b> <span style="color:var(--accent-gold)">+${Math.round(vocBonus*100)}%</span></div>`;
+
+  if (!sharedActive) {
+    html += `<div style="color:var(--accent);margin-bottom:8px">⚠ Shared EXP INATIVA! Diferenca: ${diff} (max: ${maxDiff})</div>`;
+  } else {
+    html += `<div style="color:var(--accent-green);margin-bottom:8px">✔ Shared EXP ativa (dif: ${diff}, max: ${maxDiff})</div>`;
+  }
+
+  html += '<div style="margin-top:8px"><b>EXP por membro:</b></div>';
+  members.forEach((m, i) => {
+    const share = m.level / totalLvl;
+    let memberExp = sharedExp * share;
+    memberExp *= stamina;
+    memberExp *= (1 + extraPct / 100);
+    html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span><span class="tag tag-${m.voc.toLowerCase()}">${m.voc}</span> Lv ${m.level}</span>
+      <span class="big" style="font-size:1rem">${Math.round(memberExp).toLocaleString('pt-BR')} exp</span>
+    </div>`;
+  });
+
+  html += `<div style="margin-top:10px;text-align:right"><b>EXP total compartilhada:</b> <span class="big">${Math.round(sharedExp).toLocaleString('pt-BR')}</span></div>`;
+  html += '</div>';
+  document.getElementById('expResult').innerHTML = html;
+}
+
+// ========== TIBIA COINS ==========
+function convertTC(dir) {
+  const price = parseInt(document.getElementById('tcPrice').value) || 1;
+  if (dir === 'toGold') {
+    const tc = parseInt(document.getElementById('tcAmount').value) || 0;
+    const gold = tc * price;
+    document.getElementById('goldAmount').value = gold;
+    document.getElementById('tcResult').innerHTML = `<div><b>${tc.toLocaleString('pt-BR')} TC</b> = <span class="big">${gold.toLocaleString('pt-BR')} gp</span></div>`;
+  } else {
+    const gold = parseInt(document.getElementById('goldAmount').value) || 0;
+    const tc = Math.floor(gold / price);
+    document.getElementById('tcAmount').value = tc;
+    document.getElementById('tcResult').innerHTML = `<div><b>${gold.toLocaleString('pt-BR')} gp</b> = <span class="big">${tc.toLocaleString('pt-BR')} TC</span></div>`;
+  }
+}
+
+// ========== QUESTS DATA ==========
+const quests = [
+  { name: "The Annihilator", level: 100, premium: true, reward: "Demon Helmet, Magic Plate Armor, Stonecutter Axe ou Present Box",
+    steps: "1. Forme um grupo de 4 jogadores lv 100+\n2. Va para a sala dos levers em Edron (Hero Cave)\n3. Todos puxem os levers ao mesmo tempo\n4. Matem os 4 Demon dentro do tempo\n5. Escolham a recompensa no bau",
+    npcs: "Nenhum NPC necessario" },
+  { name: "Inquisition Quest", level: 100, premium: true, reward: "Acesso ao Inquisition, varios blessings com desconto",
+    steps: "1. Fale com Henricus em Thais\n2. Complete as 6 missoes (The Ape City, The Horned Fox, etc.)\n3. Derrote os 6 bosses: Ushuriel, Zugurosh, Madareth, Annihilon, Hellgorak, Zoralurk\n4. Acesse o reward room com baus",
+    npcs: "Henricus (Thais), varios NPCs ao longo" },
+  { name: "Wrath of the Emperor", level: 80, premium: true, reward: "Helmet of the Deep, acesso a Muggy Plains e Dragonblaze Peaks",
+    steps: "1. Fale com Zalamon em Zao\n2. Complete as 12 missoes da storyline\n3. Derrote os bosses ao longo\n4. Missao final: derrote o Emperor",
+    npcs: "Zalamon (Zao Steppe)" },
+  { name: "Children of the Revolution", level: 60, premium: true, reward: "Acesso a Zao, Zaoan equipment",
+    steps: "1. Fale com Cornelius em Edron\n2. Viaje para Farmine\n3. Complete as missoes da revolucao dos Lizards\n4. Acesse Zao completo",
+    npcs: "Cornelius (Edron), NPCs em Farmine" },
+  { name: "The New Frontier", level: 80, premium: true, reward: "Acesso a Zao completo, Warzone 1-3",
+    steps: "1. Complete Children of the Revolution\n2. Fale com NPCs em Farmine e explore\n3. Complete missoes de exploracao\n4. Acesse as Warzones",
+    npcs: "Varios NPCs em Farmine" },
+  { name: "Forgotten Knowledge", level: 250, premium: true, reward: "Acesso a bosses lendarios, itens raros",
+    steps: "1. Fale com NPC em Edron Academy\n2. Complete investigacoes em varios locais\n3. Derrote os bosses: Lloyd, Thorn Knight, The Count, etc.\n4. Acesse reward room",
+    npcs: "NPC Edron Academy" },
+  { name: "Ferumbras' Ascension", level: 250, premium: true, reward: "Ferumbras' Hat, acesso a bosses poderosos",
+    steps: "1. Lv 250+ recomendado, grupo forte\n2. Complete as missoes para desbloquear seals\n3. Derrote mini-bosses em cada seal\n4. Enfrente Ferumbras no final\n5. Acesse a reward room",
+    npcs: "Varios" },
+  { name: "Heart of Destruction", level: 250, premium: true, reward: "Itens raros, acesso a area exclusiva",
+    steps: "1. Fale com NPC para iniciar\n2. Complete as missoes dentro dos portais\n3. Derrote os bosses: Eradicator, World Devourer, etc.\n4. Acesse recompensas",
+    npcs: "Varios NPCs" },
+  { name: "Killing in the Name of... Quest", level: 1, premium: false, reward: "Task points para Paw and Fur, XP e gold",
+    steps: "1. Fale com Grizzly Adams em Port Hope\n2. Escolha uma task de monstros\n3. Mate a quantidade necessaria\n4. Volte para receber recompensa e task points\n5. Acumule pontos para desbloquear bosses",
+    npcs: "Grizzly Adams (Port Hope)" },
+  { name: "The Desert Dungeon Quest", level: 0, premium: false, reward: "Scarab Shield, varios itens",
+    steps: "1. Va para a tumba no deserto de Ankrahmun\n2. Explore os niveis\n3. Use levers e passe pelas salas\n4. Colete itens nos baus",
+    npcs: "Nenhum" },
+  { name: "Demon Oak Quest", level: 120, premium: true, reward: "Demon Legs, Robe of the Ice Queen, Rainbow Shield, etc.",
+    steps: "1. Complete 6000+ task points em Killing in the Name of\n2. Fale com Oldrak em Edron\n3. Va ao Demon Oak com grupo\n4. Destrua o Demon Oak (muitos monstros spawnam)\n5. Escolha recompensa",
+    npcs: "Oldrak (Edron)" },
+  { name: "Svargrond Arena", level: 80, premium: true, reward: "Pits of Inferno tiles, itens variados",
+    steps: "1. Fale com Halvar em Svargrond\n2. Desafie as arenas: Greenhorn, Scrapper, Warlord\n3. Cada arena tem 10 waves de monstros\n4. Complete todas para maximas recompensas",
+    npcs: "Halvar (Svargrond)" },
+  { name: "Soul War Quest", level: 250, premium: true, reward: "Soulwar equipment (best in slot para muitas vocacoes)",
+    steps: "1. Acesse Zarganash\n2. Complete as trials\n3. Derrote os bosses: Goshnar's Cruelty, Malice, Hatred, Spite, Megalomania\n4. Colete recompensas",
+    npcs: "Varios em Zarganash" },
+  { name: "Feaster of Souls Quest", level: 250, premium: true, reward: "Acesso a bosses, itens BIS",
+    steps: "1. Fale com o NPC para iniciar\n2. Explore as areas e complete objetivos\n3. Derrote o boss final\n4. Colete rewards",
+    npcs: "Varios NPCs" },
+  { name: "The Rookie Guard Quest", level: 1, premium: false, reward: "Small Health Potion, equipamentos iniciais",
+    steps: "1. Quest inicial em Dawnport\n2. Siga o tutorial do NPC\n3. Complete as tarefas basicas\n4. Escolha sua vocacao ao final",
+    npcs: "NPCs de Dawnport" }
+];
+
+function renderQuests(list) {
+  const el = document.getElementById('questList');
+  el.innerHTML = list.map(q => `
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div>
+        <h3>${q.name}</h3>
+        <span style="font-size:0.75rem;color:var(--fg-muted);font-style:italic">Lv ${q.level}+ | ${q.premium ? 'Premium' : 'Free'}</span>
+      </div>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="accordion-body">
+      <div style="margin-bottom:8px"><b>Recompensa:</b> ${q.reward}</div>
+      <div style="margin-bottom:8px"><b>NPCs:</b> ${q.npcs}</div>
+      <div><b>Passo a passo:</b></div>
+      <div style="white-space:pre-line;color:var(--fg-muted);margin-top:4px">${q.steps}</div>
+    </div>
+  `).join('');
+}
+renderQuests(quests);
+
+function filterQuests() {
+  const q = document.getElementById('questSearch').value.toLowerCase();
+  renderQuests(quests.filter(x => x.name.toLowerCase().includes(q) || x.reward.toLowerCase().includes(q)));
+}
+
+function toggleAccordion(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ========== MARKET DATA ==========
+const marketItems = [
+  { name: "Tibia Coin", cat: "Moeda", price: "30k-60k", trend: "varia" },
+  { name: "Magic Plate Armor", cat: "Armor", price: "200k-500k", trend: "estavel" },
+  { name: "Demon Helmet", cat: "Helmet", price: "150k-400k", trend: "estavel" },
+  { name: "Golden Armor", cat: "Armor", price: "100k-250k", trend: "estavel" },
+  { name: "Boots of Haste", cat: "Boots", price: "150k-350k", trend: "estavel" },
+  { name: "Soft Boots", cat: "Boots", price: "200k-500k", trend: "alta demanda" },
+  { name: "Firewalker Boots", cat: "Boots", price: "50k-150k", trend: "estavel" },
+  { name: "Crown Armor", cat: "Armor", price: "40k-100k", trend: "estavel" },
+  { name: "Blue Robe", cat: "Armor", price: "30k-80k", trend: "estavel" },
+  { name: "Blessed Shield", cat: "Shield", price: "300k-800k", trend: "raro" },
+  { name: "Thunder Hammer", cat: "Weapon", price: "400k-1kk", trend: "estavel" },
+  { name: "Havoc Blade", cat: "Weapon", price: "500k-1.5kk", trend: "demanda" },
+  { name: "Umbral Master Bow", cat: "Weapon", price: "5kk-15kk", trend: "alta" },
+  { name: "Umbral Master Slayer", cat: "Weapon", price: "5kk-15kk", trend: "alta" },
+  { name: "Falcon Longsword", cat: "Weapon", price: "20kk-50kk", trend: "alto" },
+  { name: "Falcon Plate", cat: "Armor", price: "30kk-60kk", trend: "alto" },
+  { name: "Soulwar Equipment", cat: "Endgame", price: "50kk-200kk+", trend: "muito alto" },
+  { name: "Soul Talon", cat: "Endgame", price: "80kk+", trend: "raro" },
+  { name: "Giant Sword", cat: "Weapon", price: "50k-150k", trend: "estavel" },
+  { name: "Vampire Shield", cat: "Shield", price: "50k-120k", trend: "estavel" },
+  { name: "Mastermind Shield", cat: "Shield", price: "80k-200k", trend: "estavel" },
+  { name: "Spellbook of Dark Mysteries", cat: "Spellbook", price: "100k-300k", trend: "estavel" },
+  { name: "Gnome Armor", cat: "Armor", price: "3kk-8kk", trend: "alto" },
+  { name: "Gnome Helmet", cat: "Helmet", price: "2kk-6kk", trend: "alto" },
+  { name: "Gill Gugel", cat: "Helmet", price: "500k-2kk", trend: "demanda" },
+  { name: "Dream Shroud", cat: "Armor", price: "1kk-5kk", trend: "demanda" },
+  { name: "Cobra Sword", cat: "Weapon", price: "3kk-10kk", trend: "alto" },
+  { name: "Cobra Hood", cat: "Helmet", price: "2kk-8kk", trend: "alto" },
+  { name: "Lion Spangenhelm", cat: "Helmet", price: "2kk-6kk", trend: "alto" },
+  { name: "Elven Mail", cat: "Armor", price: "50k-150k", trend: "estavel" }
+];
+const marketCats = [...new Set(marketItems.map(i => i.cat))];
+let activeMarketCat = 'all';
+
+function renderMarketFilters() {
+  document.getElementById('marketCatFilter').innerHTML = `<button class="${activeMarketCat==='all'?'active':''}" onclick="setMarketCat('all')">Todos</button>` +
+    marketCats.map(c => `<button class="${activeMarketCat===c?'active':''}" onclick="setMarketCat('${c}')">${c}</button>`).join('');
+}
+function setMarketCat(cat) { activeMarketCat = cat; renderMarketFilters(); filterMarket(); }
+
+function filterMarket() {
+  const q = document.getElementById('marketSearch').value.toLowerCase();
+  const list = marketItems.filter(i => {
+    const matchQ = i.name.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q);
+    const matchCat = activeMarketCat === 'all' || i.cat === activeMarketCat;
+    return matchQ && matchCat;
+  });
+  document.getElementById('marketList').innerHTML = list.map(i => `
+    <div class="card" style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="min-width:0">
+        <b>${i.name}</b><br>
+        <span style="font-size:0.75rem;color:var(--fg-muted);font-style:italic">${i.cat}</span>
+      </div>
+      <div style="text-align:right;flex-shrink:0;margin-left:8px">
+        <div style="color:var(--accent-gold);font-family:var(--font-heading);font-weight:700">${i.price}</div>
+        <span style="font-size:0.72rem;color:var(--fg-muted)">${i.trend}</span>
+      </div>
+    </div>
+  `).join('');
+}
+renderMarketFilters();
+filterMarket();
+
+// ========== EQUIPAMENTOS POR LEVEL/VOCACAO ==========
+const equipment = {
+  EK: [
+    { range: "8-30", items: [
+      { slot: "Weapon", name: "Spike Sword / Serpent Sword", notes: "Primeiras armas decentes" },
+      { slot: "Shield", name: "Dwarven Shield / Demon Shield", notes: "" },
+      { slot: "Helmet", name: "Steel Helmet", notes: "" },
+      { slot: "Armor", name: "Plate Armor / Knight Armor", notes: "" },
+      { slot: "Legs", name: "Knight Legs / Plate Legs", notes: "" },
+      { slot: "Boots", name: "Leather Boots", notes: "" }
+    ]},
+    { range: "30-60", items: [
+      { slot: "Weapon", name: "Bright Sword / Mystic Blade", notes: "" },
+      { slot: "Shield", name: "Demon Shield / MMS", notes: "" },
+      { slot: "Helmet", name: "Warrior Helmet / Royal Helmet", notes: "" },
+      { slot: "Armor", name: "Magic Plate Armor / Golden Armor", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Boots of Haste / Soft Boots", notes: "Soft Boots para mana" }
+    ]},
+    { range: "60-130", items: [
+      { slot: "Weapon", name: "Havoc Blade / Shiny Blade", notes: "2h: Berserker" },
+      { slot: "Shield", name: "Ornate Shield / Prismatic Shield", notes: "" },
+      { slot: "Helmet", name: "Royal Helmet / Zaoan Helmet", notes: "" },
+      { slot: "Armor", name: "Prismatic Armor / Ornate Chest", notes: "" },
+      { slot: "Legs", name: "Ornate Legs / Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Guardian Boots / Soft Boots", notes: "" }
+    ]},
+    { range: "130-250", items: [
+      { slot: "Weapon", name: "Umbral Master Slayer", notes: "Ou Blade/Chopper" },
+      { slot: "Shield", name: "Ornate Shield", notes: "" },
+      { slot: "Helmet", name: "Gnome Helmet", notes: "" },
+      { slot: "Armor", name: "Gnome Armor / Prismatic Armor", notes: "" },
+      { slot: "Legs", name: "Ornate Legs", notes: "" },
+      { slot: "Boots", name: "Guardian Boots", notes: "" }
+    ]},
+    { range: "250+", items: [
+      { slot: "Weapon", name: "Falcon Longsword / Soulwar", notes: "BIS do jogo" },
+      { slot: "Shield", name: "Falcon Shield", notes: "" },
+      { slot: "Helmet", name: "Falcon Coif / Soulwar Helmet", notes: "" },
+      { slot: "Armor", name: "Falcon Plate / Soulwar Armor", notes: "" },
+      { slot: "Legs", name: "Falcon Greaves / Soulwar Legs", notes: "" },
+      { slot: "Boots", name: "Pair of Soulwalkers", notes: "" }
+    ]}
+  ],
+  RP: [
+    { range: "8-30", items: [
+      { slot: "Weapon", name: "Elvish Bow + bolts", notes: "" },
+      { slot: "Shield", name: "Dwarven Shield (melee)", notes: "" },
+      { slot: "Helmet", name: "Steel Helmet", notes: "" },
+      { slot: "Armor", name: "Scale Armor / Paladin Armor", notes: "" },
+      { slot: "Legs", name: "Plate Legs", notes: "" },
+      { slot: "Boots", name: "Leather Boots", notes: "" }
+    ]},
+    { range: "30-80", items: [
+      { slot: "Weapon", name: "Composite Hornbow / Mycological Bow", notes: "Bolts: Prismatic" },
+      { slot: "Helmet", name: "Royal Helmet / Zaoan Helmet", notes: "" },
+      { slot: "Armor", name: "Paladin Armor / Prismatic Armor", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Boots of Haste / Soft Boots", notes: "" }
+    ]},
+    { range: "80-150", items: [
+      { slot: "Weapon", name: "Rift Bow/Crossbow", notes: "Diamond Arrows lv 150" },
+      { slot: "Helmet", name: "Prismatic Helmet / Zaoan Helmet", notes: "" },
+      { slot: "Armor", name: "Prismatic Armor", notes: "" },
+      { slot: "Legs", name: "Prismatic Legs / Ornate Legs", notes: "" },
+      { slot: "Boots", name: "Guardian Boots", notes: "" }
+    ]},
+    { range: "150-250", items: [
+      { slot: "Weapon", name: "Umbral Master Bow/Crossbow", notes: "Diamond Arrows = meta" },
+      { slot: "Helmet", name: "Gnome Helmet", notes: "" },
+      { slot: "Armor", name: "Gnome Armor / Prismatic Armor", notes: "" },
+      { slot: "Legs", name: "Ornate Legs", notes: "" },
+      { slot: "Boots", name: "Guardian Boots", notes: "" }
+    ]},
+    { range: "250+", items: [
+      { slot: "Weapon", name: "Falcon Bow / Living Vine Bow / Soulwar", notes: "BIS" },
+      { slot: "Helmet", name: "Falcon Coif / Soulwar Helmet", notes: "" },
+      { slot: "Armor", name: "Falcon Plate / Ghost Chestplate", notes: "" },
+      { slot: "Legs", name: "Falcon Greaves", notes: "" },
+      { slot: "Boots", name: "Pair of Soulwalkers", notes: "" }
+    ]}
+  ],
+  MS: [
+    { range: "8-30", items: [
+      { slot: "Weapon", name: "Wand of Vortex → Wand of Dragonbreath", notes: "" },
+      { slot: "Shield", name: "Spellbook", notes: "" },
+      { slot: "Helmet", name: "Magician's Hat", notes: "" },
+      { slot: "Armor", name: "Blue Robe", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Leather Boots", notes: "" }
+    ]},
+    { range: "30-80", items: [
+      { slot: "Weapon", name: "Wand of Inferno / Wand of Cosmic Energy", notes: "" },
+      { slot: "Shield", name: "Spellbook of Mind Control", notes: "" },
+      { slot: "Helmet", name: "Yalahari Mask / Crown Helmet", notes: "" },
+      { slot: "Armor", name: "Blue Robe / Gill Coat", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Soft Boots", notes: "Essencial para mana" }
+    ]},
+    { range: "80-150", items: [
+      { slot: "Weapon", name: "Wand of Everblazing / Rift Wand", notes: "" },
+      { slot: "Shield", name: "Spellbook of Dark Mysteries", notes: "" },
+      { slot: "Helmet", name: "Gill Gugel / Yalahari Mask", notes: "" },
+      { slot: "Armor", name: "Dream Shroud / Gill Coat", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs / Gill Legs", notes: "" },
+      { slot: "Boots", name: "Soft Boots / Pair of Dreamwalkers", notes: "" }
+    ]},
+    { range: "150-250", items: [
+      { slot: "Weapon", name: "Umbral Master Wand", notes: "" },
+      { slot: "Shield", name: "Spellbook of Dark Mysteries", notes: "" },
+      { slot: "Helmet", name: "Gnome Helmet", notes: "" },
+      { slot: "Armor", name: "Gnome Armor / Dream Shroud", notes: "" },
+      { slot: "Legs", name: "Gnome Legs / Gill Legs", notes: "" },
+      { slot: "Boots", name: "Pair of Dreamwalkers", notes: "" }
+    ]},
+    { range: "250+", items: [
+      { slot: "Weapon", name: "Falcon Wand / Soulwar Wand", notes: "BIS" },
+      { slot: "Shield", name: "Spellbook of Vigilance", notes: "" },
+      { slot: "Helmet", name: "Falcon Coif / Soulwar Helmet", notes: "" },
+      { slot: "Armor", name: "Falcon Plate / Soulwar Armor", notes: "" },
+      { slot: "Legs", name: "Falcon Greaves / Soulwar Legs", notes: "" },
+      { slot: "Boots", name: "Pair of Soulwalkers", notes: "" }
+    ]}
+  ],
+  ED: [
+    { range: "8-30", items: [
+      { slot: "Weapon", name: "Snakebite Rod → Springsprout Rod", notes: "" },
+      { slot: "Shield", name: "Spellbook", notes: "" },
+      { slot: "Helmet", name: "Magician's Hat", notes: "" },
+      { slot: "Armor", name: "Blue Robe", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Leather Boots", notes: "" }
+    ]},
+    { range: "30-80", items: [
+      { slot: "Weapon", name: "Underworld Rod / Hive Rod", notes: "" },
+      { slot: "Shield", name: "Spellbook of Mind Control", notes: "" },
+      { slot: "Helmet", name: "Yalahari Mask", notes: "" },
+      { slot: "Armor", name: "Blue Robe / Gill Coat", notes: "" },
+      { slot: "Legs", name: "Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Soft Boots", notes: "" }
+    ]},
+    { range: "80-150", items: [
+      { slot: "Weapon", name: "Rift Rod / Deepling Staff", notes: "" },
+      { slot: "Shield", name: "Spellbook of Dark Mysteries", notes: "" },
+      { slot: "Helmet", name: "Gill Gugel", notes: "" },
+      { slot: "Armor", name: "Dream Shroud / Gill Coat", notes: "" },
+      { slot: "Legs", name: "Gill Legs / Zaoan Legs", notes: "" },
+      { slot: "Boots", name: "Soft Boots / Pair of Dreamwalkers", notes: "" }
+    ]},
+    { range: "150-250", items: [
+      { slot: "Weapon", name: "Umbral Master Rod", notes: "" },
+      { slot: "Shield", name: "Spellbook of Dark Mysteries", notes: "" },
+      { slot: "Helmet", name: "Gnome Helmet", notes: "" },
+      { slot: "Armor", name: "Gnome Armor", notes: "" },
+      { slot: "Legs", name: "Gnome Legs", notes: "" },
+      { slot: "Boots", name: "Pair of Dreamwalkers", notes: "" }
+    ]},
+    { range: "250+", items: [
+      { slot: "Weapon", name: "Falcon Rod / Soulwar Rod", notes: "BIS" },
+      { slot: "Shield", name: "Spellbook of Vigilance", notes: "" },
+      { slot: "Helmet", name: "Falcon Coif / Soulwar Helmet", notes: "" },
+      { slot: "Armor", name: "Falcon Plate / Soulwar Armor", notes: "" },
+      { slot: "Legs", name: "Falcon Greaves / Soulwar Legs", notes: "" },
+      { slot: "Boots", name: "Pair of Soulwalkers", notes: "" }
+    ]}
+  ]
+};
+
+let activeEquipVoc = 'EK';
+function filterEquip(voc) {
+  activeEquipVoc = voc;
+  document.querySelectorAll('#equipVocFilter button').forEach(b => b.classList.toggle('active', b.dataset.voc === voc));
+  renderEquip();
+}
+function renderEquip() {
+  const data = equipment[activeEquipVoc];
+  document.getElementById('equipList').innerHTML = data.map(tier => `
+    <div class="section-title">Level ${tier.range}</div>
+    <div class="table-wrap"><table>
+      <tr><th>Slot</th><th>Item</th><th>Notas</th></tr>
+      ${tier.items.map(i => `<tr><td><b>${i.slot}</b></td><td>${i.name}</td><td style="color:var(--fg-muted);font-style:italic">${i.notes}</td></tr>`).join('')}
+    </table></div>
+  `).join('');
+}
+renderEquip();
+
+// ========== ADDONS ==========
+const addons = [
+  { name: "Citizen Outfit", items: ["100 Minotaur Leathers", "50 Chicken Feathers", "Legionaire Flags"], npc: "NPC em cada cidade",
+    drops: "Minotaur Leather: Minotaur, Minotaur Guard. Chicken Feather: Chicken." },
+  { name: "Hunter Outfit", items: ["50 Lizard Leathers", "50 Red Dragon Leathers", "1 Envenomed Arrow", "5 Emerald Beholder Eyes", "Sniper Gloves"],
+    npc: "Lugri (Thais)", drops: "Lizard Leather: Lizards. Red Dragon Leather: Dragon Lords. Sniper Gloves: loot raro de Amazon." },
+  { name: "Mage Outfit", items: ["1 Magic Sulphur", "20 Ankh", "10 Red Pieces of Cloth", "10 Blue Pieces of Cloth"],
+    npc: "Lugri/Zoltan", drops: "Ankh: Undead (Mummy, etc). Pieces of Cloth: variados monstros em Pits of Inferno, Drefia." },
+  { name: "Knight Outfit", items: ["100 Iron Ores", "1 Chunk of Crude Iron", "100 Royal Steel"],
+    npc: "Sam (Thais)", drops: "Iron Ore: Dwarf, Dwarf Guard. Chunk of Crude Iron: Cyclops. Royal Steel: crafting com Rashid." },
+  { name: "Barbarian Outfit", items: ["1 Fighting Spirit", "100 Red Pieces of Cloth", "50 Spool of Yarn", "Perfect Behemoth Fang", "Iron Ore"],
+    npc: "Thorwulf (Svargrond)", drops: "Fighting Spirit: War Wolf, Berserk. Behemoth Fang: Behemoth." },
+  { name: "Druid Outfit", items: ["50 Wolf Paws", "50 Bear Paws", "100 Bat Wings"],
+    npc: "Ceiron (Ab'Dendriel)", drops: "Wolf Paw: Wolf. Bear Paw: Bear. Bat Wing: Bat." },
+  { name: "Wizard Outfit", items: ["1 Soul Stone", "50 Holy Orchid", "20 Infernal Bolts", "35 Lich Bones"],
+    npc: "Zoltan (Edron)", drops: "Soul Stone: Dark Torturer. Holy Orchid: em Kha'zeel. Infernal Bolt: crafting." },
+  { name: "Oriental Outfit", items: ["100 Ape Furs", "100 Fish Fins", "2 Enchanted Chicken Wings"],
+    npc: "NPC em Darashia", drops: "Ape Fur: Kongra, Sibang, Merlkin. Fish Fin: Quara." },
+  { name: "Warrior Outfit", items: ["100 Turtle Shells", "100 Swords", "1 Crown"],
+    npc: "NPC em Thais", drops: "Turtle Shell: Tortoise. Crown: Hero, Black Knight." },
+  { name: "Assassin Outfit", items: ["50 Beholder Eyes", "10 Red Dragon Scales", "30 Honeycombs", "1 Spider Silk Cloth"],
+    npc: "NPC (secreto)", drops: "Beholder Eye: Beholder. Red Dragon Scale: Dragon Lord. Honeycomb: Wasp." },
+  { name: "Beggar Outfit", items: ["100 Ape Furs", "50 Banana Skins", "30 Dirty Capes"],
+    npc: "NPC em varios locais", drops: "Banana Skin: Apes. Dirty Cape: varios humanos." },
+  { name: "Pirate Outfit", items: ["100 Eye Patches", "100 Peg Legs", "100 Pirate Bandanas", "1 Brutus Bloodbeard's Hat"],
+    npc: "Raymond Striker (Liberty Bay)", drops: "Eye Patch: Pirate. Peg Leg: Pirate Ghost/Pirate Buccaneer." },
+  { name: "Nobleman/Noblewoman Outfit", items: ["150k gold", "Outfit completo compravel"],
+    npc: "Vera (Venore) ou NPC local", drops: "Nao precisa de drops - compravel com gold." },
+  { name: "Summoner Outfit", items: ["100 Vampire Dusts", "1 Soul Stone", "50 Demon Dusts"],
+    npc: "Zoltan (Edron)", drops: "Vampire Dust: Vampire. Soul Stone: Dark Torturer. Demon Dust: Demon." },
+  { name: "Yalaharian Outfit", items: ["Quest completa (Wrath of the Emperor)"],
+    npc: "Zalamon (Zao)", drops: "Reward de quest, nao precisa itens separados." },
+  { name: "Dream Warden Outfit", items: ["Complete Dream Courts Quest"],
+    npc: "NPCs em Dream Courts", drops: "Reward de quest." },
+  { name: "Revenant Outfit", items: ["Complete Feaster of Souls Quest"],
+    npc: "NPCs de Feaster of Souls", drops: "Reward de quest." }
+];
+
+function renderAddons(list) {
+  document.getElementById('addonList').innerHTML = list.map(a => `
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div>
+        <h3>${a.name}</h3>
+        <span class="badge-count">${a.items.length} ${a.items.length === 1 ? 'item' : 'itens'}</span>
+      </div>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="accordion-body">
+      <div style="margin-bottom:8px"><b>NPC:</b> ${a.npc}</div>
+      <div style="margin-bottom:8px"><b>Itens necessarios:</b></div>
+      <ul style="padding-left:16px;margin-bottom:8px">${a.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      <div><b>Onde dropar:</b></div>
+      <div style="color:var(--fg-muted);margin-top:4px">${a.drops}</div>
+    </div>
+  `).join('');
+}
+renderAddons(addons);
+function filterAddons() {
+  const q = document.getElementById('addonSearch').value.toLowerCase();
+  renderAddons(addons.filter(a => a.name.toLowerCase().includes(q) || a.items.some(i => i.toLowerCase().includes(q)) || a.drops.toLowerCase().includes(q)));
+}
+
+// ========== MONTARIAS ==========
+const mounts = [
+  { name: "War Bear", method: "Taming", how: "Use Honey Comb em Bear durante combate", item: "Honey Comb", drop: "Wasp, Waspoid", price: "~2k-10k" },
+  { name: "Racing Bird", method: "Taming", how: "Use Bunch of Winterberries em Terrorbird", item: "Bunch of Winterberries", drop: "Dawn Flower (Svargrond)", price: "~5k" },
+  { name: "War Horse", method: "Taming", how: "Use Sugar Oat em Wild Horse", item: "Sugar Oat", drop: "Compre no NPC", price: "~5k" },
+  { name: "Undead Cavebear", method: "Taming", how: "Use Maxilla Maximus em Undead Cavebear", item: "Maxilla Maximus", drop: "Grave Danger Quest reward", price: "Quest" },
+  { name: "Midnight Panther", method: "Taming", how: "Use Leather Whip em Midnight Panther (raro spawn)", item: "Leather Whip", drop: "Compre no NPC ou loot de Banshee", price: "~20k-50k" },
+  { name: "Draptor", method: "Taming", how: "Use Reins em Draptor (raro spawn Zao)", item: "Reins", drop: "Compre no NPC de Zao", price: "~15k-30k" },
+  { name: "Titanica", method: "Taming", how: "Use Glow Wine em Stampede (raro spawn)", item: "Glow Wine", drop: "Compre no NPC", price: "~30k-100k" },
+  { name: "Tin Lizzard", method: "Taming", how: "Use Tin Key em Tin Lizzard (raro)", item: "Tin Key", drop: "Compre no NPC ou evento", price: "~50k" },
+  { name: "Blazebringer", method: "Taming", how: "Use Fiery Heart em Blazebringer (raro)", item: "Fiery Heart", drop: "Hell Hub quest area", price: "~100k+" },
+  { name: "Rapid Boar", method: "Taming", how: "Use Wooden Whistle em Rapid Boar", item: "Wooden Whistle", drop: "NPC ou loot de Wild Boar", price: "~5k-15k" },
+  { name: "Blackpelt", method: "Taming", how: "Use Harness em Black Sheep (raro)", item: "Harness", drop: "NPC", price: "~10k" },
+  { name: "Shadow Draptor", method: "Quest", how: "Complete a quest do Shadow Draptor em Zao", item: "Quest reward", drop: "Nao aplicavel", price: "Quest" },
+  { name: "Crystal Wolf", method: "Taming", how: "Use Reins of the Crystal Wolf em Crystal Wolf", item: "Reins of the Crystal Wolf", drop: "Store ou evento", price: "~300 TC" },
+  { name: "Donkey", method: "Store", how: "Compre na Tibia Store", item: "Tibia Store purchase", drop: "N/A", price: "~600 TC" },
+  { name: "Dromedary", method: "Taming", how: "Use Carrot on a Stick em Dromedary", item: "Carrot on a Stick", drop: "NPC em Darashia", price: "~5k" },
+  { name: "Kingly Deer", method: "Taming", how: "Use Golden Fir Cone em Kingly Deer", item: "Golden Fir Cone", drop: "Christmas event ou mercado", price: "Evento" },
+  { name: "Tamed Panda", method: "Taming", how: "Use Bamboo Stick em Panda", item: "Bamboo Stick", drop: "Drop de Panda Bear", price: "~5k-20k" },
+  { name: "Manta Ray", method: "Quest", how: "Complete quest relacionada em Seacrest Grounds", item: "Quest completion", drop: "N/A", price: "Quest" },
+  { name: "Ladybug", method: "Taming", how: "Use Four-Leaf Clover em Ladybug", item: "Four-Leaf Clover", drop: "Drop raro de monstros naturais", price: "~10k-30k" },
+  { name: "Ursagrodon", method: "Quest", how: "Complete missoes em Muggy Plains (Wrath of the Emperor)", item: "Quest reward", drop: "N/A", price: "Quest" },
+  { name: "The Hellgrip", method: "Quest", how: "Ferumbras Ascension Quest reward", item: "Quest completion", drop: "N/A", price: "Quest" },
+  { name: "Phantasmal Jade", method: "Store", how: "Compre na Tibia Store ou evento", item: "Store/Event", drop: "N/A", price: "~900 TC" },
+  { name: "Sparkion", method: "Store", how: "Compre na Tibia Store", item: "Tibia Store purchase", drop: "N/A", price: "~750 TC" },
+  { name: "Neon Sparkid", method: "Store", how: "Compre na Tibia Store", item: "Store purchase", drop: "N/A", price: "~750 TC" },
+  { name: "Slagsnare", method: "Event", how: "Obtido em eventos especiais (Orcsoberfest, etc)", item: "Evento", drop: "N/A", price: "Evento" }
+];
+
+function renderMounts(list) {
+  document.getElementById('mountList').innerHTML = list.map(m => `
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <div>
+        <h3>${m.name}</h3>
+        <span class="tag tag-${m.method === 'Taming' ? 'rp' : m.method === 'Quest' ? 'ek' : m.method === 'Store' ? 'ms' : 'ed'}">${m.method}</span>
+      </div>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="accordion-body">
+      <div style="margin-bottom:6px"><b>Como obter:</b> ${m.how}</div>
+      <div style="margin-bottom:6px"><b>Item necessario:</b> ${m.item}</div>
+      <div style="margin-bottom:6px"><b>Drop/Fonte:</b> ${m.drop}</div>
+      <div><b>Preco estimado:</b> <span style="color:var(--accent-gold);font-family:var(--font-heading)">${m.price}</span></div>
+    </div>
+  `).join('');
+}
+renderMounts(mounts);
+function filterMounts() {
+  const q = document.getElementById('mountSearch').value.toLowerCase();
+  renderMounts(mounts.filter(m => m.name.toLowerCase().includes(q) || m.method.toLowerCase().includes(q) || m.how.toLowerCase().includes(q) || m.item.toLowerCase().includes(q)));
+}
+</script>
