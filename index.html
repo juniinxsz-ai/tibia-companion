@@ -607,6 +607,7 @@ tr:hover td { background: var(--glow); }
   <div class="search-box">
     <input type="text" id="mountSearch" placeholder="Buscar montaria..." oninput="filterMounts()">
   </div>
+  <div class="voc-filter" id="mountMethodFilter"></div>
   <div id="mountList"></div>
 </div>
 
@@ -765,7 +766,49 @@ const quests = [
     npcs: "Varios NPCs" },
   { name: "The Rookie Guard Quest", level: 1, premium: false, reward: "Small Health Potion, equipamentos iniciais",
     steps: "1. Quest inicial em Dawnport\n2. Siga o tutorial do NPC\n3. Complete as tarefas basicas\n4. Escolha sua vocacao ao final",
-    npcs: "NPCs de Dawnport" }
+    npcs: "NPCs de Dawnport" },
+  { name: "Pits of Inferno Quest", level: 100, premium: true, reward: "Nightmare Outfit addons, Soft Boots, itens poderosos",
+    steps: "1. Forme um grupo forte (lv 100+ recomendado)\n2. Acesse o Pits of Inferno em Plains of Havoc\n3. Complete os 7 niveis tematicos (cada com levers e puzzles)\n4. Derrote os bosses em cada throne\n5. Abra os baus no final",
+    npcs: "Nenhum NPC, dungeon mecanica" },
+  { name: "The Gravedigger of Drefia Quest", level: 60, premium: true, reward: "Afflicted Outfit e addons, acesso a Drefia",
+    steps: "1. Fale com NPC em Darashia\n2. Viaje para Drefia\n3. Complete missoes envolvendo undead\n4. Derrote bosses e complete rituais\n5. Ganhe o Afflicted Outfit",
+    npcs: "NPCs em Darashia/Drefia" },
+  { name: "In Service of Yalahar Quest", level: 80, premium: true, reward: "Brotherhood Outfit, acesso a areas de Yalahar",
+    steps: "1. Fale com Palimuth em Yalahar\n2. Complete 10 missoes pela cidade\n3. Ajude os diferentes quarteiroes\n4. Descubra a verdade sobre Yalahar\n5. Escolha um final",
+    npcs: "Palimuth (Yalahar), muitos NPCs" },
+  { name: "The Ape City Quest", level: 40, premium: true, reward: "Shaman Outfit, acesso a Banuta",
+    steps: "1. Fale com NPC em Port Hope\n2. Explore as selvas\n3. Encontre a cidade dos macacos (Banuta)\n4. Complete missoes de infiltracao\n5. Ganhe acesso permanente e outfit",
+    npcs: "NPCs em Port Hope" },
+  { name: "Elemental Spheres Quest", level: 50, premium: true, reward: "Elementalist Outfit, acesso a areas elementais",
+    steps: "1. Fale com NPCs em Edron\n2. Colete as 4 esferas elementais (fogo, gelo, terra, energia)\n3. Combine as esferas\n4. Complete os desafios de cada elemento",
+    npcs: "NPCs em Edron" },
+  { name: "Liquid Black Quest", level: 130, premium: true, reward: "Deepling Outfit, acesso ao Deepling world",
+    steps: "1. Fale com NPCs em Gray Beach / Fiehonja\n2. Complete missoes subaquaticas\n3. Derrote bosses Deepling\n4. Acesse areas profundas do oceano",
+    npcs: "NPCs em Gray Beach" },
+  { name: "Dream Courts Quest", level: 250, premium: true, reward: "Dream Warden Outfit, acesso a Feyrist",
+    steps: "1. Acesse Feyrist via portal\n2. Complete missoes do mundo dos sonhos\n3. Derrote bosses oníricos\n4. Colete materiais dos dream creatures\n5. Ganhe o outfit e addons",
+    npcs: "NPCs em Feyrist" },
+  { name: "Grave Danger Quest", level: 250, premium: true, reward: "Itens poderosos, Undead Cavebear mount",
+    steps: "1. Fale com NPCs para iniciar\n2. Investigue tumbas e mausoleus\n3. Derrote bosses undead poderosos\n4. Complete a quest chain\n5. Acesse rewards",
+    npcs: "Varios NPCs" },
+  { name: "Order of the Lion Quest", level: 250, premium: true, reward: "Ivory Fang mount, equipamentos de Kilmaresh",
+    steps: "1. Viaje para Kilmaresh/Issavi\n2. Complete missoes para a Ordem dos Leoes\n3. Derrote bosses na regiao\n4. Ganhe reputacao e recompensas",
+    npcs: "NPCs em Issavi/Kilmaresh" },
+  { name: "Meriana Quest (Pirate Base)", level: 50, premium: true, reward: "Pirate Outfit, acesso a Meriana e Nargor",
+    steps: "1. Fale com Raymond Striker em Liberty Bay\n2. Viaje para Meriana island\n3. Complete missoes piratas\n4. Acesse Nargor (ilha pirata)\n5. Ganhe o Pirate Outfit",
+    npcs: "Raymond Striker (Liberty Bay)" },
+  { name: "Secret Service Quest", level: 0, premium: true, reward: "Acesso a Spy Island, achievements",
+    steps: "1. Fale com NPC em Thais, Carlin ou Venore\n2. Escolha uma faccao\n3. Complete missoes de espionagem\n4. Colete informacoes e itens\n5. Reporte ao seu contato",
+    npcs: "NPCs de espionagem em cidades principais" },
+  { name: "Bigfoot's Burden Quest", level: 80, premium: true, reward: "Warmaster Outfit addons, acesso a Gnomprona",
+    steps: "1. Fale com NPCs gnome em Kazordoon/Gnomebase\n2. Complete missoes para os gnomes\n3. Acesse Warzones 1, 2 e 3\n4. Derrote bosses das Warzones\n5. Ganhe addons e acesso permanente",
+    npcs: "NPCs gnome em Gnomebase Alpha" },
+  { name: "The Ice Islands Quest", level: 50, premium: true, reward: "Norseman Outfit addons, acesso completo a Svargrond",
+    steps: "1. Viaje para Svargrond\n2. Complete missoes na regiao gelada\n3. Desafie a arena de Svargrond (Greenhorn→Scrapper→Warlord)\n4. Complete todas as missoes da ilha\n5. Ganhe outfit addons",
+    npcs: "NPCs em Svargrond" },
+  { name: "Access to Roshamuul Quest", level: 150, premium: true, reward: "Acesso a Roshamuul, itens raros, Dream Warden progress",
+    steps: "1. Complete pre-requisitos (The New Frontier, etc)\n2. Fale com NPC para acessar\n3. Complete missoes em Roshamuul\n4. Derrote criaturas de pesadelo",
+    npcs: "NPCs de portal" }
 ];
 
 function renderQuests(list) {
@@ -829,7 +872,55 @@ const marketItems = [
   { name: "Cobra Sword", cat: "Weapon", price: "3kk-10kk", trend: "alto" },
   { name: "Cobra Hood", cat: "Helmet", price: "2kk-8kk", trend: "alto" },
   { name: "Lion Spangenhelm", cat: "Helmet", price: "2kk-6kk", trend: "alto" },
-  { name: "Elven Mail", cat: "Armor", price: "50k-150k", trend: "estavel" }
+  { name: "Elven Mail", cat: "Armor", price: "50k-150k", trend: "estavel" },
+  { name: "Dragon Scale Mail", cat: "Armor", price: "80k-200k", trend: "estavel" },
+  { name: "Crown Legs", cat: "Legs", price: "30k-80k", trend: "estavel" },
+  { name: "Zaoan Legs", cat: "Legs", price: "15k-40k", trend: "estavel" },
+  { name: "Zaoan Helmet", cat: "Helmet", price: "20k-60k", trend: "estavel" },
+  { name: "Prismatic Armor", cat: "Armor", price: "100k-300k", trend: "estavel" },
+  { name: "Ornate Shield", cat: "Shield", price: "200k-500k", trend: "alta" },
+  { name: "Royal Helmet", cat: "Helmet", price: "50k-150k", trend: "estavel" },
+  { name: "Warrior Helmet", cat: "Helmet", price: "5k-15k", trend: "baixo" },
+  { name: "Crown Armor", cat: "Armor", price: "40k-100k", trend: "estavel" },
+  { name: "Medusa Shield", cat: "Shield", price: "30k-80k", trend: "estavel" },
+  { name: "Ring of the Sky", cat: "Ring", price: "30k-80k", trend: "estavel" },
+  { name: "Soul Stone", cat: "Raro", price: "100k-300k", trend: "alta demanda" },
+  { name: "Ferumbras' Hat", cat: "Raro", price: "50kk-200kk+", trend: "muito raro" },
+  { name: "Spellbook of Mind Control", cat: "Spellbook", price: "50k-150k", trend: "estavel" },
+  { name: "Sniper Gloves", cat: "Equipamento", price: "20k-60k", trend: "estavel" },
+  { name: "Devil Helmet", cat: "Helmet", price: "50k-150k", trend: "estavel" },
+  { name: "Dragon Scale Legs", cat: "Legs", price: "80k-200k", trend: "estavel" },
+  { name: "Guardian Boots", cat: "Boots", price: "50k-120k", trend: "estavel" },
+  { name: "Yalahari Mask", cat: "Helmet", price: "50k-150k", trend: "estavel" },
+  { name: "Gill Coat", cat: "Armor", price: "30k-80k", trend: "estavel" },
+  { name: "Gill Legs", cat: "Legs", price: "30k-80k", trend: "estavel" },
+  { name: "Ornate Legs", cat: "Legs", price: "150k-400k", trend: "alta" },
+  { name: "Prismatic Legs", cat: "Legs", price: "80k-200k", trend: "estavel" },
+  { name: "Rift Bow", cat: "Weapon", price: "200k-600k", trend: "demanda" },
+  { name: "Rift Crossbow", cat: "Weapon", price: "200k-600k", trend: "demanda" },
+  { name: "Falcon Shield", cat: "Shield", price: "15kk-40kk", trend: "alto" },
+  { name: "Falcon Coif", cat: "Helmet", price: "10kk-30kk", trend: "alto" },
+  { name: "Falcon Greaves", cat: "Legs", price: "15kk-40kk", trend: "alto" },
+  { name: "Pair of Soulwalkers", cat: "Boots", price: "40kk-100kk+", trend: "muito alto" },
+  { name: "Pair of Dreamwalkers", cat: "Boots", price: "3kk-10kk", trend: "alto" },
+  { name: "Cobra Boots", cat: "Boots", price: "2kk-6kk", trend: "alto" },
+  { name: "Spellbook of Vigilance", cat: "Spellbook", price: "8kk-20kk", trend: "alto" },
+  { name: "Wand of Everblazing", cat: "Weapon", price: "100k-400k", trend: "estavel" },
+  { name: "Rift Wand", cat: "Weapon", price: "200k-600k", trend: "demanda" },
+  { name: "Rift Rod", cat: "Weapon", price: "200k-600k", trend: "demanda" },
+  { name: "Umbral Master Wand", cat: "Weapon", price: "5kk-15kk", trend: "alta" },
+  { name: "Umbral Master Rod", cat: "Weapon", price: "5kk-15kk", trend: "alta" },
+  { name: "Falcon Wand", cat: "Weapon", price: "15kk-40kk", trend: "muito alto" },
+  { name: "Falcon Rod", cat: "Weapon", price: "15kk-40kk", trend: "muito alto" },
+  { name: "Falcon Bow", cat: "Weapon", price: "20kk-50kk", trend: "muito alto" },
+  { name: "Living Vine Bow", cat: "Weapon", price: "10kk-30kk", trend: "alto" },
+  { name: "Spellbook of Lost Souls", cat: "Spellbook", price: "40kk-100kk", trend: "muito alto" },
+  { name: "Ghost Chestplate", cat: "Armor", price: "15kk-40kk", trend: "alto" },
+  { name: "Gnome Legs", cat: "Legs", price: "1kk-4kk", trend: "alto" },
+  { name: "Lion Plate", cat: "Armor", price: "3kk-10kk", trend: "alto" },
+  { name: "Soulwar Armor", cat: "Endgame", price: "80kk-250kk+", trend: "BIS" },
+  { name: "Soulwar Helmet", cat: "Endgame", price: "60kk-180kk+", trend: "BIS" },
+  { name: "Soulwar Legs", cat: "Endgame", price: "70kk-200kk+", trend: "BIS" }
 ];
 const marketCats = [...new Set(marketItems.map(i => i.cat))];
 let activeMarketCat = 'all';
@@ -1051,94 +1142,300 @@ renderEquip();
 
 // ========== ADDONS ==========
 const addons = [
-  { name: "Citizen Outfit", items: ["100 Minotaur Leathers", "50 Chicken Feathers", "Legionaire Flags"], npc: "NPC em cada cidade",
-    drops: "Minotaur Leather: Minotaur, Minotaur Guard. Chicken Feather: Chicken." },
-  { name: "Hunter Outfit", items: ["50 Lizard Leathers", "50 Red Dragon Leathers", "1 Envenomed Arrow", "5 Emerald Beholder Eyes", "Sniper Gloves"],
-    npc: "Lugri (Thais)", drops: "Lizard Leather: Lizards. Red Dragon Leather: Dragon Lords. Sniper Gloves: loot raro de Amazon." },
-  { name: "Mage Outfit", items: ["1 Magic Sulphur", "20 Ankh", "10 Red Pieces of Cloth", "10 Blue Pieces of Cloth"],
-    npc: "Lugri/Zoltan", drops: "Ankh: Undead (Mummy, etc). Pieces of Cloth: variados monstros em Pits of Inferno, Drefia." },
-  { name: "Knight Outfit", items: ["100 Iron Ores", "1 Chunk of Crude Iron", "100 Royal Steel"],
-    npc: "Sam (Thais)", drops: "Iron Ore: Dwarf, Dwarf Guard. Chunk of Crude Iron: Cyclops. Royal Steel: crafting com Rashid." },
-  { name: "Barbarian Outfit", items: ["1 Fighting Spirit", "100 Red Pieces of Cloth", "50 Spool of Yarn", "Perfect Behemoth Fang", "Iron Ore"],
-    npc: "Thorwulf (Svargrond)", drops: "Fighting Spirit: War Wolf, Berserk. Behemoth Fang: Behemoth." },
-  { name: "Druid Outfit", items: ["50 Wolf Paws", "50 Bear Paws", "100 Bat Wings"],
-    npc: "Ceiron (Ab'Dendriel)", drops: "Wolf Paw: Wolf. Bear Paw: Bear. Bat Wing: Bat." },
-  { name: "Wizard Outfit", items: ["1 Soul Stone", "50 Holy Orchid", "20 Infernal Bolts", "35 Lich Bones"],
-    npc: "Zoltan (Edron)", drops: "Soul Stone: Dark Torturer. Holy Orchid: em Kha'zeel. Infernal Bolt: crafting." },
-  { name: "Oriental Outfit", items: ["100 Ape Furs", "100 Fish Fins", "2 Enchanted Chicken Wings"],
-    npc: "NPC em Darashia", drops: "Ape Fur: Kongra, Sibang, Merlkin. Fish Fin: Quara." },
-  { name: "Warrior Outfit", items: ["100 Turtle Shells", "100 Swords", "1 Crown"],
-    npc: "NPC em Thais", drops: "Turtle Shell: Tortoise. Crown: Hero, Black Knight." },
-  { name: "Assassin Outfit", items: ["50 Beholder Eyes", "10 Red Dragon Scales", "30 Honeycombs", "1 Spider Silk Cloth"],
-    npc: "NPC (secreto)", drops: "Beholder Eye: Beholder. Red Dragon Scale: Dragon Lord. Honeycomb: Wasp." },
-  { name: "Beggar Outfit", items: ["100 Ape Furs", "50 Banana Skins", "30 Dirty Capes"],
-    npc: "NPC em varios locais", drops: "Banana Skin: Apes. Dirty Cape: varios humanos." },
-  { name: "Pirate Outfit", items: ["100 Eye Patches", "100 Peg Legs", "100 Pirate Bandanas", "1 Brutus Bloodbeard's Hat"],
-    npc: "Raymond Striker (Liberty Bay)", drops: "Eye Patch: Pirate. Peg Leg: Pirate Ghost/Pirate Buccaneer." },
-  { name: "Nobleman/Noblewoman Outfit", items: ["150k gold", "Outfit completo compravel"],
-    npc: "Vera (Venore) ou NPC local", drops: "Nao precisa de drops - compravel com gold." },
-  { name: "Summoner Outfit", items: ["100 Vampire Dusts", "1 Soul Stone", "50 Demon Dusts"],
-    npc: "Zoltan (Edron)", drops: "Vampire Dust: Vampire. Soul Stone: Dark Torturer. Demon Dust: Demon." },
-  { name: "Yalaharian Outfit", items: ["Quest completa (Wrath of the Emperor)"],
-    npc: "Zalamon (Zao)", drops: "Reward de quest, nao precisa itens separados." },
-  { name: "Dream Warden Outfit", items: ["Complete Dream Courts Quest"],
-    npc: "NPCs em Dream Courts", drops: "Reward de quest." },
-  { name: "Revenant Outfit", items: ["Complete Feaster of Souls Quest"],
-    npc: "NPCs de Feaster of Souls", drops: "Reward de quest." }
+  { name: "Citizen Outfit", addon1: "Backpack (Addon 1)", addon2: "Hat (Addon 2)",
+    items1: ["100 Minotaur Leathers", "50 Chicken Feathers"],
+    items2: ["100 Iron Ores"],
+    npc: "Norf (Kazordoon), Norma (Edron), etc. - NPC da cidade",
+    drops: "Minotaur Leather: Minotaur, Minotaur Guard, Minotaur Archer. Chicken Feather: Chicken. Iron Ore: Dwarf, Dwarf Guard, Dwarf Soldier, Stone Golem, Worker Golem." },
+  { name: "Hunter Outfit", addon1: "Gloves (Addon 1)", addon2: "Hat (Addon 2)",
+    items1: ["50 Lizard Leathers", "50 Red Dragon Leathers"],
+    items2: ["1 Sniper Gloves", "1 Piece of Royal Steel", "1 Devil Helmet", "100 Demon Dusts"],
+    npc: "Eremo (Isca de acesso via NPC em Edron/Cormaya)",
+    drops: "Lizard Leather: Lizard Sentinel, Lizard Snakecharmer, Lizard Templar. Red Dragon Leather: Dragon Lord, Fire Dragon. Sniper Gloves: Amazon, Elf Scout. Devil Helmet: Devil. Demon Dust: Demon, Destroyer." },
+  { name: "Knight Outfit", addon1: "Sword (Addon 1)", addon2: "Helmet Plume (Addon 2)",
+    items1: ["100 Iron Ores", "1 Huge Chunk of Crude Iron", "1 Flask of Warrior's Sweat"],
+    items2: ["100 Perfect Behemoth Fangs", "1 Piece of Royal Steel", "1 Crown Armor", "1 Pair of Dragon Scale Legs"],
+    npc: "Gregor (Thais Knight Guild)",
+    drops: "Iron Ore: Dwarf, Stone Golem. Huge Chunk of Crude Iron: Cyclops Smith. Warrior's Sweat: troque 4 Warrior Helmets no djinn. Perfect Behemoth Fang: Behemoth. Royal Steel: troque Crown Armor no djinn. Dragon Scale Legs: Dragon Lord." },
+  { name: "Mage Outfit", addon1: "Wand (Addon 1)", addon2: "Hat (Addon 2)",
+    items1: ["1 Mana Potion", "1 Wand of Inferno", "1 Hat of the Mad"],
+    items2: ["1 Ferumbras' Hat", "1 Soul Stone", "1 Magic Plate Armor", "1 Spellbook of Mind Control"],
+    npc: "Zoltan (Edron Magic Academy)",
+    drops: "Hat of the Mad: Haunted Treeling, Mad Scientist. Ferumbras' Hat: Ferumbras (boss raro). Soul Stone: Dark Torturer, Lost Soul. Magic Plate Armor: loot raro de varios bosses. Spellbook of Mind Control: rare loot de Undead Dragons." },
+  { name: "Summoner Outfit", addon1: "Staff (Addon 1)", addon2: "Rune Belt (Addon 2)",
+    items1: ["1 Staff of Summoning", "100 Red Gems"],
+    items2: ["100 Blue Gems", "100 Green Gems", "100 Magma Amulets", "100 Scarab Coins"],
+    npc: "Zoltan (Edron Magic Academy)",
+    drops: "Staff of Summoning: boss raro. Red/Blue/Green Gems: Dragon Lord, Hydra, Sea Serpent, Medusa. Magma Amulet: Fire Elemental, Hellhound. Scarab Coin: Scarab, Ancient Scarab." },
+  { name: "Barbarian Outfit", addon1: "War Paint / Wig (Addon 1)", addon2: "Belt Skull (Addon 2)",
+    items1: ["100 Iron Ores", "1 Red Piece of Cloth"],
+    items2: ["1 Fighting Spirit", "25 Flasks of Warrior's Sweat", "25 Red Pieces of Cloth"],
+    npc: "Thorwulf (Ice Islands/Svargrond region)",
+    drops: "Iron Ore: Dwarf, Stone Golem. Red Piece of Cloth: Pirate Cutthroat, Pirate Buccaneer. Fighting Spirit: troque 2 Royal Helmets no djinn. Warrior's Sweat: troque 4 Warrior Helmets no djinn." },
+  { name: "Nobleman/Noblewoman Outfit", addon1: "Sceptre / Headpiece (Addon 1)", addon2: "Cape / Dress (Addon 2)",
+    items1: ["150,000 gold"],
+    items2: ["150,000 gold"],
+    npc: "Rashid (muda de cidade por dia) - ou NPC local",
+    drops: "Sem drops necessarios - pague 150k gold por cada addon diretamente ao NPC." },
+  { name: "Druid Outfit", addon1: "Antlers (Addon 1)", addon2: "Cape (Addon 2)",
+    items1: ["100 Bear Paws", "1 Druid's Hatchet (de loot ou comprado)"],
+    items2: ["50 Dryad's Hearts", "100 Ape Furs", "1 Mandrake"],
+    npc: "Ceiron (Ab'Dendriel)",
+    drops: "Bear Paw: Bear, Werebear. Ape Fur: Kongra, Sibang, Merlkin. Dryad's Heart: Dryad (Ab'Dendriel). Mandrake: muito raro, Corym Vanguard ou quest." },
+  { name: "Wizard Outfit", addon1: "Skull Mask / Snake Tiara (Addon 1)", addon2: "Shoulder Pad / Wings (Addon 2)",
+    items1: ["1 Medusa Shield", "1 Dragon Scale Mail", "1 Crown Legs", "1 Ring of the Sky"],
+    items2: ["50 Holy Orchids"],
+    npc: "Addon 1: Lugri (underground Thais). Addon 2: The Queen of the Banshees (Ghostlands)",
+    drops: "Medusa Shield: Medusa. Dragon Scale Mail: Dragon Lord, Frost Dragon. Crown Legs: Hero, Black Knight. Ring of the Sky: loot raro ou quest. Holy Orchid: Elf Arcanist." },
+  { name: "Warrior Outfit", addon1: "Shoulder Spike (Addon 1)", addon2: "Two-Handed Sword (Addon 2)",
+    items1: ["100 Hardened Bones", "100 Turtle Shells", "1 Spirit Container", "1 Dragon Claw"],
+    items2: ["100 Iron Ores", "1 Piece of Royal Steel"],
+    npc: "Addon 1: Trisha (Carlin Knight Guild) → Cornelia. Addon 2: Sabrehaven Blacksmith",
+    drops: "Hardened Bone: Bonebeast. Turtle Shell: Tortoise, Thornback Tortoise. Spirit Container: Souleater ou troque Royal Helmets no djinn. Dragon Claw: Demodras (boss). Iron Ore: Dwarf, Stone Golem. Royal Steel: troque Crown Armor no djinn." },
+  { name: "Oriental Outfit", addon1: "Scimitar / Jewelled Belt (Addon 1)", addon2: "Turban / Veil (Addon 2)",
+    items1: ["1 Coral Comb (quest em Calassa)"],
+    items2: ["100 Ape Furs (macho: Turban)", "100 Scarab Coins + 1 Blue Piece of Cloth (femea: Veil)"],
+    npc: "Habdel/Ishina (Darashia)",
+    drops: "Coral Comb: bau em Calassa (quest). Ape Fur: Kongra, Sibang, Merlkin. Scarab Coin: Scarab, Ancient Scarab. Blue Piece of Cloth: Blue Djinn, Nightmare." },
+  { name: "Pirate Outfit", addon1: "Sabre (Addon 1)", addon2: "Hat (Addon 2)",
+    items1: ["100 Eye Patches", "100 Peg Legs", "100 Hooks"],
+    items2: ["Ron the Ripper's Sabre", "Deadeye Devious' Eye Patch", "Lethal Lissy's Shirt", "Brutus Bloodbeard's Hat"],
+    npc: "Addon 1: Duncan → Morgan (Meriana). Addon 2: Ariella (Meriana)",
+    drops: "Eye Patch/Peg Leg/Hook: todos Pirates. Para Addon 2: mate 4 bosses piratas em Nargor (Ron the Ripper, Deadeye Devious, Lethal Lissy, Brutus Bloodbeard) e colete o item unico de cada." },
+  { name: "Assassin Outfit", addon1: "Headpiece (Outfit completo)", addon2: "Katana (Addon 2)",
+    items1: ["30 Bonelord Eyes", "10 Red Dragon Scales", "30 Lizard Scales", "20 Fish Fins", "20 Vampire Dusts", "10 Demon Dusts", "1 Flask of Warrior's Sweat"],
+    items2: ["Mate The Horned Fox (boss)", "Traga Behemoth Claw + Nose Ring"],
+    npc: "Vescu (norte de Port Hope - precisa estar bebado para falar!)",
+    drops: "Bonelord Eye: Bonelord, Braindeath. Red Dragon Scale: Dragon Lord. Lizard Scale: Lizards. Fish Fin: Quara. Vampire Dust: Vampire. Demon Dust: Demon. Warrior's Sweat: troque 4 Warrior Helmets no djinn. Horned Fox: boss em Port Hope." },
+  { name: "Beggar Outfit", addon1: "Beard / Dress (Addon 1)", addon2: "Staff (Addon 2)",
+    items1: ["100 Ape Furs", "50 Rolls of Donkey Ears (macho)", "100 Ape Furs + quest de Simon (femea)"],
+    items2: ["1 Blessed Wooden Stake", "200 gp para Simon the Beggar"],
+    npc: "Outfit base: Hugo (Venore) - 50 Minotaur Leathers + 30 Heaven Blossoms + 20 Brown Cloth + 10 Bat Wings. Addons: NPC de Fibula ou Venore",
+    drops: "Minotaur Leather: Minotaur, Minotaur Guard. Heaven Blossom: Elf, Elf Scout. Brown Piece of Cloth: Ghoul, Barbarian. Bat Wing: Bat, Mutated Bat. Ape Fur: Kongra, Sibang, Merlkin." },
+  { name: "Afflicted Outfit", addon1: "Tentacles (Addon 1)", addon2: "Skull (Addon 2)",
+    items1: ["Complete The Gravedigger of Drefia quest"],
+    items2: ["Complete The Gravedigger of Drefia quest (segundo addon)"],
+    npc: "NPC em Drefia",
+    drops: "Reward de quest - The Gravedigger of Drefia." },
+  { name: "Brotherhood Outfit", addon1: "Hood (Addon 1)", addon2: "Staff (Addon 2)",
+    items1: ["Complete In Service of Yalahar quest"],
+    items2: ["Complete In Service of Yalahar quest (missoes adicionais)"],
+    npc: "NPCs em Yalahar",
+    drops: "Reward de quest - In Service of Yalahar." },
+  { name: "Demon Hunter Outfit", addon1: "Wings (Addon 1)", addon2: "Scythe (Addon 2)",
+    items1: ["Complete The Inquisition quest"],
+    items2: ["Complete The Inquisition quest (todas as missoes)"],
+    npc: "Henricus (Thais)",
+    drops: "Reward de quest - The Inquisition Quest." },
+  { name: "Deepling Outfit", addon1: "Spear (Addon 1)", addon2: "Helmet (Addon 2)",
+    items1: ["Complete Liquid Black Quest missoes"],
+    items2: ["Complete mais missoes da Liquid Black Quest"],
+    npc: "NPCs em Fiehonja/Gray Beach",
+    drops: "Reward de quest - Liquid Black Quest." },
+  { name: "Cave Explorer Outfit", addon1: "Headlamp (Addon 1)", addon2: "Backpack (Addon 2)",
+    items1: ["Complete The New Frontier quest"],
+    items2: ["Complete missoes adicionais de The New Frontier"],
+    npc: "NPCs em Farmine/Zao",
+    drops: "Reward de quest - The New Frontier." },
+  { name: "Shaman Outfit", addon1: "Skull Staff (Addon 1)", addon2: "Mask (Addon 2)",
+    items1: ["Complete The Ape City quest"],
+    items2: ["Complete missoes adicionais"],
+    npc: "NPCs em Banuta/Port Hope region",
+    drops: "Reward de quest - The Ape City." },
+  { name: "Norseman Outfit", addon1: "Battle Axe (Addon 1)", addon2: "Helmet (Addon 2)",
+    items1: ["Complete Barbarian Arena + Ice Islands quests"],
+    items2: ["Complete todas arena challenges em Svargrond"],
+    npc: "Halvar (Svargrond Arena)",
+    drops: "Reward de quests em Svargrond/Ice Islands." },
+  { name: "Nightmare Outfit", addon1: "Wings (Addon 1)", addon2: "Skull (Addon 2)",
+    items1: ["Complete Pits of Inferno quest"],
+    items2: ["Complete missoes completas de PoI"],
+    npc: "NPCs de Pits of Inferno",
+    drops: "Reward de quest - Pits of Inferno." },
+  { name: "Warmaster Outfit", addon1: "Shoulder Plates (Addon 1)", addon2: "Helmet (Addon 2)",
+    items1: ["Complete Warzone 1-3 quests"],
+    items2: ["Complete todas as Warzones"],
+    npc: "NPCs em Gnomebase Alpha",
+    drops: "Reward de quest - Warzones (The New Frontier)." },
+  { name: "Yalaharian Outfit", addon1: "Shoulder Drape (Addon 1)", addon2: "Helmet Ornament (Addon 2)",
+    items1: ["Complete Children of the Revolution + In Service of Yalahar"],
+    items2: ["Complete The New Frontier + Wrath of the Emperor"],
+    npc: "Zalamon (Zao Steppe)",
+    drops: "Reward de quest chain completa de Zao." },
+  { name: "Dream Warden Outfit", addon1: "Floating Orb (Addon 1)", addon2: "Wing Cape (Addon 2)",
+    items1: ["Complete Dream Courts Quest"],
+    items2: ["Derrote todos bosses de Dream Courts"],
+    npc: "NPCs em Dream Courts/Feyrist",
+    drops: "Reward de quest - Dream Courts." },
+  { name: "Revenant Outfit", addon1: "Soul Cape (Addon 1)", addon2: "Skull Crown (Addon 2)",
+    items1: ["Complete Feaster of Souls Quest"],
+    items2: ["Derrote bosses adicionais de Feaster of Souls"],
+    npc: "NPCs de Feaster of Souls",
+    drops: "Reward de quest - Feaster of Souls." },
+  { name: "Golden Outfit", addon1: "Wings (Addon 1)", addon2: "Crown (Addon 2)",
+    items1: ["Gaste 1,000,000,000 gold (1kkk) na Golden NPC para addon 1"],
+    items2: ["Gaste mais gold para completar - total 5kkk+ para outfit completo"],
+    npc: "NPC Aldo (Thais depot, andar inferior)",
+    drops: "Sem drops - pague gold diretamente. Addon 1: 1kkk, Addon 2: 2.5kkk. Outfit completo: extremamente caro." },
+  { name: "Royal Costume Outfit", addon1: "Sceptre (Addon 1)", addon2: "Crown (Addon 2)",
+    items1: ["Gaste 750,000,000 gold (750kk)"],
+    items2: ["Gaste mais 1,250,000,000 gold (1.25kkk)"],
+    npc: "NPC Aldo (Thais depot)",
+    drops: "Sem drops - pague gold. Custo total: 2kkk gold." },
+  { name: "Elementalist Outfit", addon1: "Orb (Addon 1)", addon2: "Crown (Addon 2)",
+    items1: ["Complete Elemental Spheres Quest"],
+    items2: ["Complete quest completa"],
+    npc: "NPCs em Edron/varias cidades",
+    drops: "Reward de quest." }
 ];
 
 function renderAddons(list) {
-  document.getElementById('addonList').innerHTML = list.map(a => `
+  document.getElementById('addonList').innerHTML = list.map(a => {
+    const totalItems = (a.items1 ? a.items1.length : 0) + (a.items2 ? a.items2.length : 0);
+    return `
     <div class="accordion-header" onclick="toggleAccordion(this)">
       <div>
         <h3>${a.name}</h3>
-        <span class="badge-count">${a.items.length} ${a.items.length === 1 ? 'item' : 'itens'}</span>
+        <span class="badge-count">${totalItems} ${totalItems === 1 ? 'item' : 'itens'}</span>
       </div>
       <span class="arrow">▶</span>
     </div>
     <div class="accordion-body">
       <div style="margin-bottom:8px"><b>NPC:</b> ${a.npc}</div>
-      <div style="margin-bottom:8px"><b>Itens necessarios:</b></div>
-      <ul style="padding-left:16px;margin-bottom:8px">${a.items.map(i => `<li>${i}</li>`).join('')}</ul>
-      <div><b>Onde dropar:</b></div>
+      ${a.addon1 ? `<div style="margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:8px">
+        <div style="margin-bottom:4px"><b style="color:var(--accent)">${a.addon1}:</b></div>
+        <ul style="padding-left:16px;margin-bottom:4px">${a.items1.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>` : ''}
+      ${a.addon2 ? `<div style="margin-bottom:8px">
+        <div style="margin-bottom:4px"><b style="color:var(--accent-green)">${a.addon2}:</b></div>
+        <ul style="padding-left:16px;margin-bottom:4px">${a.items2.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>` : ''}
+      <div><b>Onde dropar / obter:</b></div>
       <div style="color:var(--fg-muted);margin-top:4px">${a.drops}</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 renderAddons(addons);
 function filterAddons() {
   const q = document.getElementById('addonSearch').value.toLowerCase();
-  renderAddons(addons.filter(a => a.name.toLowerCase().includes(q) || a.items.some(i => i.toLowerCase().includes(q)) || a.drops.toLowerCase().includes(q)));
+  renderAddons(addons.filter(a => {
+    const allItems = [...(a.items1||[]), ...(a.items2||[])];
+    return a.name.toLowerCase().includes(q) || allItems.some(i => i.toLowerCase().includes(q)) || a.drops.toLowerCase().includes(q);
+  }));
 }
 
 // ========== MONTARIAS ==========
 const mounts = [
-  { name: "War Bear", method: "Taming", how: "Use Honey Comb em Bear durante combate", item: "Honey Comb", drop: "Wasp, Waspoid", price: "~2k-10k" },
-  { name: "Racing Bird", method: "Taming", how: "Use Bunch of Winterberries em Terrorbird", item: "Bunch of Winterberries", drop: "Dawn Flower (Svargrond)", price: "~5k" },
-  { name: "War Horse", method: "Taming", how: "Use Sugar Oat em Wild Horse", item: "Sugar Oat", drop: "Compre no NPC", price: "~5k" },
-  { name: "Undead Cavebear", method: "Taming", how: "Use Maxilla Maximus em Undead Cavebear", item: "Maxilla Maximus", drop: "Grave Danger Quest reward", price: "Quest" },
-  { name: "Midnight Panther", method: "Taming", how: "Use Leather Whip em Midnight Panther (raro spawn)", item: "Leather Whip", drop: "Compre no NPC ou loot de Banshee", price: "~20k-50k" },
-  { name: "Draptor", method: "Taming", how: "Use Reins em Draptor (raro spawn Zao)", item: "Reins", drop: "Compre no NPC de Zao", price: "~15k-30k" },
-  { name: "Titanica", method: "Taming", how: "Use Glow Wine em Stampede (raro spawn)", item: "Glow Wine", drop: "Compre no NPC", price: "~30k-100k" },
-  { name: "Tin Lizzard", method: "Taming", how: "Use Tin Key em Tin Lizzard (raro)", item: "Tin Key", drop: "Compre no NPC ou evento", price: "~50k" },
-  { name: "Blazebringer", method: "Taming", how: "Use Fiery Heart em Blazebringer (raro)", item: "Fiery Heart", drop: "Hell Hub quest area", price: "~100k+" },
-  { name: "Rapid Boar", method: "Taming", how: "Use Wooden Whistle em Rapid Boar", item: "Wooden Whistle", drop: "NPC ou loot de Wild Boar", price: "~5k-15k" },
-  { name: "Blackpelt", method: "Taming", how: "Use Harness em Black Sheep (raro)", item: "Harness", drop: "NPC", price: "~10k" },
-  { name: "Shadow Draptor", method: "Quest", how: "Complete a quest do Shadow Draptor em Zao", item: "Quest reward", drop: "Nao aplicavel", price: "Quest" },
-  { name: "Crystal Wolf", method: "Taming", how: "Use Reins of the Crystal Wolf em Crystal Wolf", item: "Reins of the Crystal Wolf", drop: "Store ou evento", price: "~300 TC" },
-  { name: "Donkey", method: "Store", how: "Compre na Tibia Store", item: "Tibia Store purchase", drop: "N/A", price: "~600 TC" },
-  { name: "Dromedary", method: "Taming", how: "Use Carrot on a Stick em Dromedary", item: "Carrot on a Stick", drop: "NPC em Darashia", price: "~5k" },
-  { name: "Kingly Deer", method: "Taming", how: "Use Golden Fir Cone em Kingly Deer", item: "Golden Fir Cone", drop: "Christmas event ou mercado", price: "Evento" },
-  { name: "Tamed Panda", method: "Taming", how: "Use Bamboo Stick em Panda", item: "Bamboo Stick", drop: "Drop de Panda Bear", price: "~5k-20k" },
-  { name: "Manta Ray", method: "Quest", how: "Complete quest relacionada em Seacrest Grounds", item: "Quest completion", drop: "N/A", price: "Quest" },
-  { name: "Ladybug", method: "Taming", how: "Use Four-Leaf Clover em Ladybug", item: "Four-Leaf Clover", drop: "Drop raro de monstros naturais", price: "~10k-30k" },
-  { name: "Ursagrodon", method: "Quest", how: "Complete missoes em Muggy Plains (Wrath of the Emperor)", item: "Quest reward", drop: "N/A", price: "Quest" },
-  { name: "The Hellgrip", method: "Quest", how: "Ferumbras Ascension Quest reward", item: "Quest completion", drop: "N/A", price: "Quest" },
-  { name: "Phantasmal Jade", method: "Store", how: "Compre na Tibia Store ou evento", item: "Store/Event", drop: "N/A", price: "~900 TC" },
-  { name: "Sparkion", method: "Store", how: "Compre na Tibia Store", item: "Tibia Store purchase", drop: "N/A", price: "~750 TC" },
-  { name: "Neon Sparkid", method: "Store", how: "Compre na Tibia Store", item: "Store purchase", drop: "N/A", price: "~750 TC" },
-  { name: "Slagsnare", method: "Event", how: "Obtido em eventos especiais (Orcsoberfest, etc)", item: "Evento", drop: "N/A", price: "Evento" }
+  // === TAMING MOUNTS (use item especial na criatura) ===
+  { name: "War Bear", method: "Taming", how: "Use Slingshot em Bear", item: "Slingshot", drop: "Compre de NPC ou loot de Goblin", price: "~1k-5k" },
+  { name: "Racing Bird", method: "Taming", how: "Use Carrot on a Stick em Terror Bird", item: "Carrot on a Stick", drop: "Compre de NPC em Ab'Dendriel", price: "~500gp" },
+  { name: "War Horse", method: "Taming", how: "Use Sugar Oat em Wild Horse (World Change)", item: "Sugar Oat", drop: "Compre de NPC (Venore)", price: "~5k-20k" },
+  { name: "Donkey", method: "Taming", how: "Use Bag of Apple Slices em Donkey", item: "Bag of Apple Slices", drop: "Loot de Witch, Stuffed Toad", price: "~2k-10k" },
+  { name: "Dromedary", method: "Taming", how: "Use Fist on a Stick em Dromedary", item: "Fist on a Stick", drop: "Compre de NPC em Darashia", price: "~500gp" },
+  { name: "Rapid Boar", method: "Taming", how: "Use Hunting Horn em Rapid Boar", item: "Hunting Horn", drop: "Quest Rottin Wood ou Market", price: "~10k-50k" },
+  { name: "Midnight Panther", method: "Taming", how: "Use Leather Whip em Midnight Panther (spawn raro noturno)", item: "Leather Whip", drop: "NPC ou loot de Banshee", price: "~50k-200k" },
+  { name: "Draptor", method: "Taming", how: "Use Harness em Draptor (spawn raro em Zao)", item: "Harness", drop: "Compre de NPC em Farmine", price: "~30k-100k" },
+  { name: "Titanica", method: "Taming", how: "Use Giant Shrimp em Crustacea Gigantica (spawn raro)", item: "Giant Shrimp", drop: "Loot de Quara Constrictor, Quara Hydromancer", price: "~50k-200k" },
+  { name: "Tin Lizzard", method: "Taming", how: "Use Tin Key em Tin Lizzard (spawn raro em Gnomebase)", item: "Tin Key", drop: "Loot de Glooth Golem", price: "~100k-500k" },
+  { name: "Manta Ray", method: "Taming", how: "Use Foxtail em Manta Ray (spawn raro em Seacrest)", item: "Foxtail", drop: "Loot de Fox", price: "~200k-1kk" },
+  { name: "Ladybug", method: "Taming", how: "Use Four-Leaf Clover em Ladybug (spawn raro)", item: "Four-Leaf Clover", drop: "Loot raro de Shambling Corpse, Troll Champion", price: "~100k-500k" },
+  { name: "Scorpion King", method: "Taming", how: "Use Scorpion Sceptre em Scorpion King (spawn raro)", item: "Scorpion Sceptre", drop: "Loot de Scorpion", price: "~200k-1kk" },
+  { name: "Tamed Panda", method: "Taming", how: "Use Bamboo Leaves em Panda Bear", item: "Bamboo Leaves", drop: "Loot de Draken Spellweaver, Draken Warmaster", price: "~5k-20k" },
+  { name: "Undead Cavebear", method: "Taming", how: "Use Maxilla Maximus em Undead Cavebear", item: "Maxilla Maximus", drop: "Loot raro de Undead em Helheim", price: "~50k-200k" },
+  { name: "Magma Crawler", method: "Taming", how: "Use Glow Wine em Magma Crawler", item: "Glow Wine", drop: "Loot de Lava Lurker", price: "~100k-500k" },
+  { name: "Crystal Wolf", method: "Taming", how: "Use Diapason em Crystal Wolf (Ice Islands)", item: "Diapason", drop: "Loot de Crystal Spider", price: "~50k-150k" },
+  { name: "Black Sheep", method: "Taming", how: "Use Reins em Black Sheep (spawn raro)", item: "Reins", drop: "NPC ou Market", price: "~20k-80k" },
+  { name: "Kingly Deer", method: "Taming", how: "Use Golden Fir Cone em Kingly Deer (spawn raro)", item: "Golden Fir Cone", drop: "Christmas event, loot de White Deer", price: "~50k-200k" },
+  { name: "Tiger Slug", method: "Taming", how: "Use Slug Drug em Tiger Slug (spawn raro)", item: "Slug Drug", drop: "Loot de Slug, Marsh Stalker", price: "~200k-1kk" },
+  { name: "Shock Head", method: "Taming", how: "Use Nightmare Horn em Shock Head (spawn raro)", item: "Nightmare Horn", drop: "Loot raro de Nightmare, Nightmare Scion", price: "~500k-5kk" },
+  { name: "Walker", method: "Taming", how: "Use Control Unit em Walker (Rathleton)", item: "Control Unit", drop: "Loot de Glooth Bandit, Rustheap Golem", price: "~100k-500k" },
+  { name: "Rift Runner", method: "Taming", how: "Use Mysterious Scroll em Rift Runner (spawn raro)", item: "Mysterious Scroll", drop: "Loot raro de Reality Reaver, Spark of Destruction", price: "~1kk-10kk" },
+  { name: "Neon Sparkid", method: "Taming", how: "Use Crackling Egg em Neon Sparkid (spawn raro)", item: "Crackling Egg", drop: "Loot raro de criaturas em Heart of Destruction", price: "~500k-5kk" },
+  { name: "Vortexion", method: "Taming", how: "Use Menacing Egg em Vortexion (spawn raro)", item: "Menacing Egg", drop: "Loot raro de criaturas em Heart of Destruction", price: "~500k-5kk" },
+  { name: "Sparkion", method: "Taming", how: "Use Vibrant Egg em Sparkion (spawn raro)", item: "Vibrant Egg", drop: "Loot de criaturas em Heart of Destruction", price: "~500k-5kk" },
+  { name: "Mole", method: "Taming", how: "Use Candle Stump em Mole (spawn raro)", item: "Candle Stump", drop: "Loot de Mole", price: "~200k-1kk" },
+  { name: "Uniwheel", method: "Taming", how: "Use Golden Can of Oil em Uniwheel (Rathleton)", item: "Golden Can of Oil", drop: "Loot de Glooth Anemone, Metal Gargoyle", price: "~200k-1kk" },
+  { name: "Stone Rhino", method: "Taming", how: "Use Astral Shaper Rune em Stone Rhino", item: "Astral Shaper Rune", drop: "Loot de Earth Elemental, Massive Earth Elemental", price: "~200k-1kk" },
+  { name: "Water Buffalo", method: "Taming", how: "Use Leech em Water Buffalo (spawn raro em Kilmaresh)", item: "Leech", drop: "Loot de criaturas aquaticas", price: "~50k-200k" },
+  { name: "Widow Queen", method: "Taming", how: "Use Sweet Smelling Bait em Widow Queen (spawn raro)", item: "Sweet Smelling Bait", drop: "Loot de Giant Spider, Tarantula", price: "~100k-500k" },
+  { name: "Ironblight", method: "Taming", how: "Use Iron Loadstone em Ironblight (spawn raro)", item: "Iron Loadstone", drop: "Loot de Rustheap Golem, Metal Gargoyle", price: "~200k-1kk" },
+  { name: "Dragonling", method: "Taming", how: "Use Decorative Ribbon em Dragonling (spawn raro)", item: "Decorative Ribbon", drop: "Loot de Dragon, Dragon Lord", price: "~100k-500k" },
+  { name: "Haze", method: "Taming", how: "Use Spectral Scrap of Cloth em Haze (spawn raro)", item: "Spectral Scrap of Cloth", drop: "Loot de Ghost, Spectre", price: "~200k-1kk" },
+  { name: "Hibernal Moth", method: "Taming", how: "Use Purple Tendril Lantern em Hibernal Moth", item: "Purple Tendril Lantern", drop: "Loot de criaturas em Gnomprona", price: "~100k-500k" },
+  { name: "Lacewing Moth", method: "Taming", how: "Use Turquoise Tendril Lantern em Lacewing Moth", item: "Turquoise Tendril Lantern", drop: "Loot de criaturas em Gnomprona", price: "~100k-500k" },
+  { name: "Flying Book", method: "Taming", how: "Use Library Ticket em Flying Book (spawn raro)", item: "Library Ticket", drop: "Loot de criaturas em Secret Library", price: "~1kk-10kk" },
+  { name: "White Lion", method: "Taming", how: "Use Red Silk Flower em White Lion (spawn raro)", item: "Red Silk Flower", drop: "Loot de Lion, Werelion", price: "~200k-1kk" },
+  { name: "Phantasmal Jade", method: "Taming", how: "Use itens espectrais em Phantasmal Jade (spawn raro)", item: "Spectral Horseshoes + Horse Tack + Saddle", drop: "Loot de criaturas espectrais em Ghost Ship", price: "~500k-5kk" },
+  { name: "Gnarlhound", method: "Taming", how: "Use Gnarly Leather em Gnarlhound (Venore swamp)", item: "Gnarly Leather", drop: "Gnarlhound drop", price: "~10k-30k" },
+
+  // === QUEST MOUNTS ===
+  { name: "Gnarlhound (Quest)", method: "Quest", how: "Complete Shadows of Yalahar Quest e use Golem Wrench", item: "Golem Wrench", drop: "Reward da Shadows of Yalahar Quest", price: "Quest" },
+  { name: "Blazebringer", method: "Quest", how: "Complete The Lightbearer event (acenda todos os 10 basins)", item: "Deed of Ownership", drop: "Lightbearer event em Novembro", price: "Evento" },
+  { name: "Gravedigger", method: "Quest", how: "Complete a Gravedigger of Drefia Quest", item: "Nail Case", drop: "Reward da Gravedigger of Drefia Quest", price: "Quest" },
+  { name: "Gryphon", method: "Quest", how: "Complete a Kilmaresh Quest e use The Regalia of Suon", item: "The Regalia of Suon", drop: "Reward da Kilmaresh Quest", price: "Quest" },
+  { name: "Noble Lion", method: "Quest", how: "Complete Lion's Rock Quest e use The Lion's Heart", item: "The Lion's Heart", drop: "Daily task da Lion's Rock Quest", price: "Quest/~50k" },
+  { name: "Shadow Draptor", method: "Quest", how: "Complete a Shadow Draptor quest em Zao", item: "Quest reward", drop: "Reward de quest em Zao (req. Children of Revolution)", price: "Quest" },
+  { name: "Ursagrodon", method: "Quest", how: "Complete missoes em Muggy Plains (Wrath of the Emperor)", item: "Melting Horn", drop: "Reward de quest em Zao", price: "Quest" },
+  { name: "The Hellgrip", method: "Quest", how: "Complete Ferumbras' Ascension Quest", item: "Quest completion", drop: "Reward da Ferumbras' Ascension Quest", price: "Quest (lv 250+)" },
+  { name: "Stampor", method: "Quest", how: "Entregue 30 Hollow Stampor Hoofs + 50 Horns + 100 Talons ao NPC", item: "Stampor Hoofs + Horns + Talons", drop: "Loot de Stampor em Muggy Plains", price: "~100k-300k" },
+  { name: "Glooth Glider", method: "Quest", how: "Complete a missao do Glooth Glider em Rathleton", item: "Quest completion", drop: "Reward de quest em Rathleton", price: "Quest" },
+  { name: "Mutated Abomination", method: "Quest", how: "Complete The Cradle of Monsters Quest", item: "Quest completion", drop: "Reward de The Cradle of Monsters Quest", price: "Quest" },
+  { name: "Antelope", method: "Quest", how: "Troque 145,000 Hunting Task Points no Task Board", item: "Hunting Task Points", drop: "Acumule pontos em tasks de caca", price: "Task Points" },
+  { name: "Ivory Fang", method: "Quest", how: "Complete Order of the Lion Quest", item: "Quest completion", drop: "Reward de quest", price: "Quest" },
+
+  // === STORE MOUNTS (compra com Tibia Coins) ===
+  { name: "Armoured War Horse", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Azudocus", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Blazing Unicorn", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Carpacosaurus", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Cerberus Champion", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Crimson Ray", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Death Crawler", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Desert King", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Emerald Raven", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Eventide Nandu", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Flamesteed", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Floating Kashmir", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Frozen Heart", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Gorongra", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Jade Lion", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Jade Pincer", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Jousting Eagle", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Nethersteed", method: "Store", how: "Compre na Tibia Store (cavalo fantasma)", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Night Waccoon", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Noctungra", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Savanna Ostrich", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Silverneck", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Skybreaker Pegasus", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Tempest", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Void Waccoon", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Winter King", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Coral Rhea", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Golden Dragonfly", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Sanguine Frog", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Verdant Frog", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Gloom Widow", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Azure Frog", method: "Store", how: "Compre na Tibia Store", item: "870 TC", drop: "N/A", price: "870 TC" },
+  { name: "Rented Horse", method: "Store", how: "Alugue na Tibia Store (temporario)", item: "150 TC", drop: "N/A", price: "150 TC" },
+
+  // === EVENT MOUNTS ===
+  { name: "Slagsnare", method: "Event", how: "Obtido no evento Orcsoberfest (outubro)", item: "Itens do evento Orcsoberfest", drop: "Monstros do Orcsoberfest", price: "Evento" },
+  { name: "Icy Slagsnare", method: "Event", how: "Obtido em evento especial de inverno", item: "Itens do evento", drop: "Evento sazonal", price: "Evento" },
+  { name: "Bright Percht Sleigh", method: "Event", how: "Obtido no Winterlight Solstice event (dezembro)", item: "Itens do evento de Natal", drop: "Monstros do evento Percht", price: "Evento" },
+  { name: "Dark Percht Sleigh", method: "Event", how: "Obtido no Winterlight Solstice event (dezembro)", item: "Itens do evento de Natal", drop: "Monstros do evento Percht", price: "Evento" },
+  { name: "Winterlight Reindeer", method: "Event", how: "Obtido no evento Winterlight Solstice", item: "Itens do evento de Natal", drop: "Monstros do evento", price: "Evento" },
+  { name: "Orcish Siege Ram", method: "Event", how: "Obtido no Orcsoberfest event", item: "Itens do evento", drop: "Evento sazonal", price: "Evento" },
+  { name: "Gloothomotive", method: "Event", how: "Obtido em evento Retro Treasure", item: "Wind-Up Key", drop: "Evento Retro Treasure / loot raro", price: "Evento/Raro" }
 ];
+
+let activeMountMethod = 'all';
+function renderMountFilters() {
+  const methods = ['all','Taming','Quest','Store','Event'];
+  document.getElementById('mountMethodFilter').innerHTML = methods.map(m =>
+    `<button class="${activeMountMethod===m?'active':''}" onclick="setMountMethod('${m}')">${m==='all'?'Todos':m}</button>`
+  ).join('');
+}
+function setMountMethod(m) { activeMountMethod = m; renderMountFilters(); filterMounts(); }
 
 function renderMounts(list) {
   document.getElementById('mountList').innerHTML = list.map(m => `
@@ -1157,9 +1454,14 @@ function renderMounts(list) {
     </div>
   `).join('');
 }
+renderMountFilters();
 renderMounts(mounts);
 function filterMounts() {
   const q = document.getElementById('mountSearch').value.toLowerCase();
-  renderMounts(mounts.filter(m => m.name.toLowerCase().includes(q) || m.method.toLowerCase().includes(q) || m.how.toLowerCase().includes(q) || m.item.toLowerCase().includes(q)));
+  renderMounts(mounts.filter(m => {
+    const matchQ = m.name.toLowerCase().includes(q) || m.method.toLowerCase().includes(q) || m.how.toLowerCase().includes(q) || m.item.toLowerCase().includes(q);
+    const matchMethod = activeMountMethod === 'all' || m.method === activeMountMethod;
+    return matchQ && matchMethod;
+  }));
 }
 </script>
